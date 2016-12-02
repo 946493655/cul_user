@@ -15,6 +15,7 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
+
 /**
  * get请求，返回数据
  */
@@ -26,10 +27,13 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
 /**
  * 接口的post请求，返回数据
  */
+//用户管理
 $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], function () use ($app) {
     //用户数据
     $app->post('user', 'UserController@index');
     $app->post('user/oneuser', 'UserController@getOneUser');
+    $app->post('user/oneuserbyuname', 'UserController@getOneUserByUname');
+    $app->post('user/doregist', 'UserController@doRegist');
     //个人资料
     $app->post('person/one', 'PersonController@getOnePerson');
     //公司资料
@@ -41,6 +45,21 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('frield/pass', 'CompanyController@getPass');
     $app->post('frield/refuse', 'CompanyController@getRefuse');
     $app->post('frield/del', 'CompanyController@setDel');
+    //用户心声
+    $app->post('uservoice', 'UserVoiceController@index');
+    $app->post('uservoice/add', 'UserVoiceController@store');
+});
+
+//活动管理
+$app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Activity'], function () use ($app) {
     //签到管理
+    $app->post('sign', 'SignController@index');
+    $app->post('sign/apply', 'SignController@getApply');
     //金币管理
+});
+
+//管理员管理
+$app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Admin'], function () use ($app) {
+    //日志管理
+    $app->post('log', 'LogController@index');
 });

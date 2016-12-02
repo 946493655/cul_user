@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Member;
 
+use App\Models\Admin\LogModel;
 use App\Models\CompanyModel;
 use App\Models\PersonModel;
 use App\Models\UserModel;
@@ -108,5 +109,119 @@ class UserController extends BaseController
         if (!$uid) { return array(); }
         $companyModel = CompanyModel::where('uid',$uid)->first();
         return $companyModel ? $this->objToArr($companyModel) : [];
+    }
+
+    /**
+     * 通过 uname 判断是否存在用户
+     */
+    public function getOneUserByUname()
+    {
+        $uname = $_POST['uname'];
+        if (!$uname) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+                'data'  =>  [],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $userModel = UserModel::where('username',$uname)->first();
+        if ($userModel) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  1,
+                    'msg'   =>  '已存在此用户！',
+                ],
+                'data'  =>  $this->objToArr($userModel),
+            ];
+            echo json_encode($rstArr);exit;
+        } else {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  0,
+                    'msg'   =>  '没有该用户，可以注册！',
+                ],
+                'data'  =>  [],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+    }
+
+    /**
+     * 新用户注册
+     */
+    public function doRegist()
+    {
+        $uname = $_POST['username'];
+        $password = $_POST['password'];
+        $pwd = $_POST['pwd'];
+        $ip = $_POST['ip'];
+        $ipaddress = $_POST['ipaddress'];
+        $genre = $_POST['genre'];
+        if (!$uname || !$password || !$pwd || !$ip || !$ipaddress || !$genre) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        //判断是否存在用户
+        $userModel = UserModel::where('username',$uname)
+            ->where('pwd',$pwd)
+            ->first();
+        if ($userModel) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '已存在此用户！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        //插入数据
+        $data = [
+            'username'  =>  $uname,
+            'password'  =>  $password,
+            'pwd'       =>  $pwd,
+            'ip'        =>  $ip,
+            'created_at'=> time(),
+            'lastLogin'=> time(),
+        ];
+        UserModel::create($data);
+
+        //登陆加入用户日志表
+        $userModel = UserModel::where('username',$uname)
+            ->where('pwd',$pwd)
+            ->where('ip',$ip)
+            ->first();
+        $serial = date('YmdHis',time()).rand(0,10000);
+        $userlog = [
+            'uid'=> $userModel->id,
+            'uname'=> $uname,
+            'genre'=> $genre,
+            'serial'=> $serial,
+            'ip'=> $ip,
+            'ipaddress'=> $ipaddress,
+            'action'=> $_SERVER['REQUEST_URI'],
+            'loginTime'=> time(),
+            'created_at'=> $userModel->created_at,
+        ];
+        LogModel::create($userlog);
+
+        $datas = $this->objToArr($userModel);
+        $datas['person'] = $this->getPerson($userModel->id);
+        $datas['company'] = $this->getCompany($userModel->id);
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '注册成功！',
+            ],
+            'data'  =>  $datas,
+        ];
+        echo json_encode($rstArr);exit;
     }
 }
