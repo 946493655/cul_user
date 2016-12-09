@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Admin;
 
-use App\Models\Base\BaseModel;
+use App\Models\BaseModel;
 
 class RoleActionModel extends BaseModel
 {

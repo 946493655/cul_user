@@ -26,4 +26,43 @@ class LogModel extends BaseModel
     {
         return $this->logoutTime ? date("Y年m月d日 H:i", $this->logoutTime) : '非正常退出';
     }
+
+    /**
+     * 管理员信息
+     */
+    public function getAdmin($uid=null)
+    {
+        $adminInfo = AdminModel::find($uid);
+        return $adminInfo ? $adminInfo : '';
+    }
+
+    /**
+     * 管理员名称
+     */
+    public function getAdminName($uid=null)
+    {
+        return $this->getAdmin($uid) ? $this->getAdmin($uid)->username : '';
+    }
+
+    /**
+     * 日志用户名
+     */
+    public function getUname()
+    {
+        $uid = $this->uid;
+        if ($this->genre==1) {
+            $uname = $this->getUserName($uid);
+        } elseif ($this->genre==2) {
+            $uname = $this->getAdminName($uid);
+        }
+        return isset($uname) ? $uname : '';
+    }
+
+    /**
+     * 日志类型
+     */
+    public function getGenreName()
+    {
+        return $this->genres[$this->genre];
+    }
 }

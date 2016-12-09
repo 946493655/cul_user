@@ -31,35 +31,35 @@ class ActionModel extends BaseModel
         }
         return isset($actionName) ? $actionName : '';
     }
-
-    /**
-     * 获得所有父级
-     */
-    public function getParents()
-    {
-        $parents = ActionModel::where('pid',0)->get();
-        $parentArr = array(0=>'所有');
-        if (count($parents)) {
-            foreach ($parents as $parent) {
-                $parentArr[$parent->id] = $parent->name;
-            }
-        }
-        return $parentArr;
-    }
-
-    /**
-     * 系统后台左侧菜单栏用
-     */
-    public static function getAdminMenus()
-    {
-        $actionArr = array();
-        $roleActions = RoleActionModel::where('role_id',\Session::get('admin.role_id'))->get();
-        foreach ($roleActions as $roleAction) {
-            $actionArr[] = $roleAction->action_id;
-        }
-        return ActionModel::whereIn('id',$actionArr)
-            ->where('isshow',2)
-            ->orderBy('sort','desc')
-            ->get();
-    }
+//
+//    /**
+//     * 获得所有父级
+//     */
+//    public function getParents()
+//    {
+//        $parents = ActionModel::where('pid',0)->get();
+//        $parentArr = array(0=>'所有');
+//        if (count($parents)) {
+//            foreach ($parents as $parent) {
+//                $parentArr[$parent->id] = $parent->name;
+//            }
+//        }
+//        return $parentArr;
+//    }
+//
+//    /**
+//     * 系统后台左侧菜单栏用
+//     */
+//    public static function getAdminMenus()
+//    {
+//        $actionArr = array();
+//        $roleActions = RoleActionModel::where('role_id',\Session::get('admin.role_id'))->get();
+//        foreach ($roleActions as $roleAction) {
+//            $actionArr[] = $roleAction->action_id;
+//        }
+//        return ActionModel::whereIn('id',$actionArr)
+//            ->where('isshow',2)
+//            ->orderBy('sort','desc')
+//            ->get();
+//    }
 }

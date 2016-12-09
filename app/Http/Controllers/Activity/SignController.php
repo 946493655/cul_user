@@ -62,7 +62,7 @@ class SignController extends BaseController
     /**
      * 申请签到
      */
-    public function getApply()
+    public function store()
     {
         $uid = $_POST['uid'];
         if (!$uid) {

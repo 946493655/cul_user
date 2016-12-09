@@ -11,4 +11,7 @@ class PersonModel extends BaseModel
     protected $fillable = [
         'id','realname','sex','idcard','idfront','uid','created_at','updated_at',
     ];
+    protected $sexs = [
+        1=>'男','女',
+    ];
 }

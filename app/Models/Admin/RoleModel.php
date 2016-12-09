@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Admin;
 
-use App\Models\Base\BaseModel;
+use App\Models\BaseModel;
 
 class RoleModel extends BaseModel
 {
@@ -10,14 +10,9 @@ class RoleModel extends BaseModel
         'id','name','intro','created_at','updated_at',
     ];
 
-    public function admin()
-    {
-        return AdminModel::where('role_id',$this->id)->get();
-    }
-
-//    public function action()
+//    public function admin()
 //    {
-//        return RoleActionModel::where('role',\Session::get('admin.adminid'))->get();
+//        return AdminModel::where('role_id',$this->id)->get();
 //    }
 
     /**
@@ -54,5 +49,19 @@ class RoleModel extends BaseModel
     public function getActionId($action)
     {
         return $this->getRoleAction($action) ? $this->getRoleAction($action)->action_id  : '';
+    }
+
+    /**
+     * 当前管理员权限id集合
+     */
+    public function getActionArr()
+    {
+        $roleActions = $this->getRoleActions();
+        if ($roleActions) {
+            foreach ($roleActions as $roleAction) {
+                $actionArr[] = $roleAction->action_id;
+            }
+        }
+        return isset($actionArr) ? $actionArr : [];
     }
 }

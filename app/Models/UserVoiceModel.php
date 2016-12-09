@@ -16,4 +16,9 @@ class UserVoiceModel extends BaseModel
     {
         return $this->getUserName($this->uid);
     }
+
+    public function getIsShow()
+    {
+        return $this->isshows[$this->isshow];
+    }
 }
