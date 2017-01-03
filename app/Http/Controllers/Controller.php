@@ -7,6 +7,7 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     protected $limit = 20;      //每页显示记录数
+    protected $selfModel;       //当前控制器的实例化model
 
     /**
      * 对象转为数组

@@ -1,8 +1,6 @@
 <?php
 namespace App\Models;
 
-use App\Models\Base\PicModel;
-
 class UserParamsModel extends BaseModel
 {
     /**

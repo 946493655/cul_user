@@ -14,4 +14,9 @@ class PersonModel extends BaseModel
     protected $sexs = [
         1=>'男','女',
     ];
+
+    public function sexName()
+    {
+        return $this->sexs[$this->sex];
+    }
 }

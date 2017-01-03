@@ -18,28 +18,16 @@ class ActionController extends BaseController
         $page = isset($_POST['page'])?$_POST['page']:1;         //页码，默认第一页
         $start = $limit * ($page - 1);      //记录起始id
 
-        if (!$isshow && !$pid) {
-            $actionModels = ActionModel::orderBy('id','desc')
-                ->orderBy('sort','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        } elseif ($isshow && !$pid) {
-            $actionModels = ActionModel::where('isshow',$isshow)
+        $isshowArr = $isshow ? [$isshow] : [0,1,2];     //是否显示转为数组
+        if (!$pid) {
+            $models = ActionModel::whereIn('isshow',$isshowArr)
                 ->orderBy('id','desc')
                 ->orderBy('sort','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
-        } elseif (!$isshow && $pid) {
-            $actionModels = ActionModel::where('pid',$pid)
-                ->orderBy('id','desc')
-                ->orderBy('sort','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        } elseif ($isshow && $pid) {
-            $actionModels = ActionModel::where('isshow',$isshow)
+        } else {
+            $models = ActionModel::whereIn('isshow',$isshowArr)
                 ->where('pid',$pid)
                 ->orderBy('id','desc')
                 ->orderBy('sort','desc')
@@ -47,7 +35,7 @@ class ActionController extends BaseController
                 ->take($limit)
                 ->get();
         }
-        if (!count($actionModels)) {
+        if (!count($models)) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -58,12 +46,12 @@ class ActionController extends BaseController
         }
         //整理数据
         $datas = array();
-        foreach ($actionModels as $k=>$actionModel) {
-            $datas[$k] = $this->objToArr($actionModel);
-            $datas[$k]['createTime'] = $actionModel->createTime();
-            $datas[$k]['updateTime'] = $actionModel->updateTime();
-            $datas[$k]['parentName'] = $actionModel->getParentName();
-            $datas[$k]['isShow'] = $actionModel->getIsShow();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['parentName'] = $model->getParentName();
+            $datas[$k]['isShow'] = $model->getIsShow();
         }
         $rstArr = [
             'error' => [
@@ -71,6 +59,7 @@ class ActionController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -97,6 +86,7 @@ class ActionController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -113,16 +103,16 @@ class ActionController extends BaseController
             foreach ($roleActions as $roleAction) {
                 $actionArr[] = $roleAction->action_id;
             }
-            $actionModels = ActionModel::whereIn('id',$actionArr)
+            $models = ActionModel::whereIn('id',$actionArr)
                 ->where('isshow',2)
                 ->orderBy('sort','desc')
                 ->get();
         } else {
-            $actionModels = ActionModel::where('isshow',2)
+            $models = ActionModel::where('isshow',2)
                 ->orderBy('sort','desc')
                 ->get();
         }
-        if (!count($actionModels)) {
+        if (!count($models)) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -131,12 +121,12 @@ class ActionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        foreach ($actionModels as $k=>$actionModel) {
-            $datas[$k] = $this->objToArr($actionModel);
-            $datas[$k]['createTime'] = $actionModel->createTime();
-            $datas[$k]['updateTime'] = $actionModel->updateTime();
-            $datas[$k]['parentName'] = $actionModel->getParentName();
-            $datas[$k]['isShow'] = $actionModel->getIsShow();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['parentName'] = $model->getParentName();
+            $datas[$k]['isShow'] = $model->getIsShow();
         }
         $rstArr = [
             'error' =>  [
@@ -144,6 +134,7 @@ class ActionController extends BaseController
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -163,8 +154,8 @@ class ActionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $actionModels = ActionModel::where('pid',$pid)->get();
-        if (!count($actionModels)) {
+        $models = ActionModel::where('pid',$pid)->get();
+        if (!count($models)) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -173,12 +164,12 @@ class ActionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        foreach ($actionModels as $k=>$actionModel) {
-            $datas[$k] = $this->objToArr($actionModel);
-            $datas[$k]['createTime'] = $actionModel->createTime();
-            $datas[$k]['updateTime'] = $actionModel->updateTime();
-            $datas[$k]['parentName'] = $actionModel->getParentName();
-            $datas[$k]['isShow'] = $actionModel->getIsShow();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['parentName'] = $model->getParentName();
+            $datas[$k]['isShow'] = $model->getIsShow();
         }
         $rstArr = [
             'error' =>  [
@@ -186,6 +177,7 @@ class ActionController extends BaseController
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -244,7 +236,8 @@ class ActionController extends BaseController
         $url = $_POST['url'];
         $action = $_POST['action'];
         $style_class = $_POST['style_class'];
-        if (!$id || !$name || !isset($intro) || $namespace || !$controller_prefix || !$url || !$action || !isset($style_class)) {
+        $pid = $_POST['pid'];
+        if (!$id || !$name || !$namespace || !$controller_prefix || !$url || !$action) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -1,
@@ -261,6 +254,7 @@ class ActionController extends BaseController
             'url'   =>  $url,
             'action'    =>  $action,
             'style_class'   =>  $style_class,
+            'pid'   =>  $pid,
             'updated_at'    =>  time(),
         ];
         ActionModel::where('id',$id)->update($data);
@@ -288,9 +282,9 @@ class ActionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $actionModel = ActionModel::find($id);
-        if (!$actionModel) {
-            if (!$actionModel) {
+        $model = ActionModel::find($id);
+        if (!$model) {
+            if (!$model) {
                 $rstArr = [
                     'error' =>  [
                         'code'  =>  -2,
@@ -300,17 +294,18 @@ class ActionController extends BaseController
                 echo json_encode($rstArr);exit;
             }
         }
-        $datas = $this->objToArr($actionModel);
-        $datas['createTime'] = $actionModel->createTime();
-        $datas['updateTime'] = $actionModel->updateTime();
-        $datas['parentName'] = $actionModel->getParentName();
-        $datas['isShow'] = $actionModel->getIsShow();
+        $datas = $this->objToArr($model);
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $datas['parentName'] = $model->getParentName();
+        $datas['isShow'] = $model->getIsShow();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '操作成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -443,9 +438,9 @@ class ActionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $actionModel = ActionModel::find($pid);
-        if (!$actionModel) {
-            if (!$actionModel) {
+        $model = ActionModel::find($pid);
+        if (!$model) {
+            if (!$model) {
                 $rstArr = [
                     'error' =>  [
                         'code'  =>  -2,
@@ -455,17 +450,18 @@ class ActionController extends BaseController
                 echo json_encode($rstArr);exit;
             }
         }
-        $datas = $this->objToArr($actionModel);
-        $datas['createTime'] = $actionModel->createTime();
-        $datas['updateTime'] = $actionModel->updateTime();
-        $datas['parentName'] = $actionModel->getParentName();
-        $datas['isShow'] = $actionModel->getIsShow();
+        $datas = $this->objToArr($model);
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $datas['parentName'] = $model->getParentName();
+        $datas['isShow'] = $model->getIsShow();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -486,9 +482,9 @@ class ActionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $actionModel = ActionModel::find($id);
-        if (!$actionModel) {
-            if (!$actionModel) {
+        $model = ActionModel::find($id);
+        if (!$model) {
+            if (!$model) {
                 $rstArr = [
                     'error' =>  [
                         'code'  =>  -2,

@@ -9,6 +9,11 @@ class CompanyController extends BaseController
      * 个人资料
      */
 
+    public function __construct()
+    {
+        $this->selfModel = new CompanyModel();
+    }
+
     /**
      * 获取公司列表
      */
@@ -20,18 +25,18 @@ class CompanyController extends BaseController
         $start = $limit * ($page - 1);      //记录起始id
 
         if ($genre) {
-            $companyModels = CompanyModel::where('genre',$genre)
+            $models = CompanyModel::where('genre',$genre)
                 ->orderBy('id','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
         } else {
-            $companyModels = CompanyModel::orderBy('id','desc')
+            $models = CompanyModel::orderBy('id','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
         }
-        if (!count($companyModels)) {
+        if (!count($models)) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -42,11 +47,11 @@ class CompanyController extends BaseController
         }
         //整理数据
         $datas = array();
-        foreach ($companyModels as $k=>$companyModel) {
-            $datas[$k] = $this->objToArr($companyModel);
-            $datas[$k]['genreName'] = $companyModel->genreName();
-            $datas[$k]['createTime'] = $companyModel->createTime();
-            $datas[$k]['updateTime'] = $companyModel->updateTime();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['genreName'] = $model->genreName();
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
         }
         $rstArr = [
             'error' =>  [
@@ -54,6 +59,9 @@ class CompanyController extends BaseController
                 'msg'   =>  '公司数据获取成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'genres' =>  $this->selfModel['genres'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -74,8 +82,8 @@ class CompanyController extends BaseController
             echo json_encode($rstArr);exit;
         }
 
-        $companyModel = CompanyModel::where('uid',$uid)->first();
-        if (!$companyModel) {
+        $model = CompanyModel::where('uid',$uid)->first();
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -84,14 +92,17 @@ class CompanyController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($companyModel);
-        $datas['genreName'] = $companyModel->genreName();
+        $datas = $this->objToArr($model);
+        $datas['genreName'] = $model->genreName();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '公司资料获取成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'genres' =>  $this->selfModel['genres'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -150,8 +161,8 @@ class CompanyController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $companyModel = CompanyModel::find($id);
-        if (!$companyModel) {
+        $model = CompanyModel::find($id);
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -160,13 +171,16 @@ class CompanyController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($companyModel);
+        $datas = $this->objToArr($model);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'genres' =>  $this->selfModel['genres'],
+            ],
         ];
         echo json_encode($rstArr);exit;
 

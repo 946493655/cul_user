@@ -3,7 +3,7 @@ namespace App\Models;
 
 class UserVoiceModel extends BaseModel
 {
-    protected $table = 'bs_user_voice';
+    protected $table = 'bs_voices';
     protected $fillable = [
         'id','name','uid','work','intro','isshow','created_at',
     ];
@@ -20,5 +20,14 @@ class UserVoiceModel extends BaseModel
     public function getIsShow()
     {
         return $this->isshows[$this->isshow];
+    }
+
+    /**
+     * 用户类型
+     */
+    public function getGenreName()
+    {
+        $userModel = UserModel::find($this->uid);
+        return $userModel ? $userModel->userType() : '';
     }
 }

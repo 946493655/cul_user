@@ -9,29 +9,31 @@ class OpinionController extends BaseController
      * 用户意见
      */
 
+    public function __construct()
+    {
+        $this->selfModel = new OpinionModel();
+    }
+
     /**
      * 列表
      */
     public function index()
     {
+        $status = isset($_POST['status'])?$_POST['status']:0;
         $isshow = (isset($_POST['isshow'])&&$_POST['isshow'])?$_POST['isshow']:0;     //是否显示
         $limit = isset($_POST['limit'])?$_POST['limit']:$this->limit;     //每页显示记录数
         $page = isset($_POST['page'])?$_POST['page']:1;         //页码，默认第一页
         $start = $limit * ($page - 1);      //记录起始id
 
-        if ($isshow) {
-            $opinionModels = OpinionModel::where('isshow',$isshow)
-                ->orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        } else {
-            $opinionModels = OpinionModel::orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        }
-        if (!count($opinionModels)) {
+        $statusArr = $status ? [$status] : [0,1,2,3,4,5];       //意见状态转数组
+        $isshowArr = $isshow ? [$isshow] : [0,1,2];             //是否显示转数组
+        $models = OpinionModel::whereIn('status',$statusArr)
+            ->whereIn('isshow',$isshowArr)
+            ->orderBy('id','desc')
+            ->skip($start)
+            ->take($limit)
+            ->get();
+        if (!count($models)) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -42,13 +44,13 @@ class OpinionController extends BaseController
         }
         //整理数据
         $datas = array();
-        foreach ($opinionModels as $k=>$opinionModel) {
-            $datas[$k] = $this->objToArr($opinionModel);
-            $datas[$k]['username'] = $opinionModel->getUName();
-            $datas[$k]['createTime'] = $opinionModel->createTime();
-            $datas[$k]['updateTime'] = $opinionModel->updateTime();
-            $datas[$k]['statusName'] = $opinionModel->getStatusName();
-            $datas[$k]['isShowName'] = $opinionModel->getIsShow();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['username'] = $model->getUName();
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['statusName'] = $model->getStatusName();
+            $datas[$k]['isShowName'] = $model->getIsShow();
         }
         $rstArr = [
             'error' => [
@@ -56,6 +58,70 @@ class OpinionController extends BaseController
                 'msg'   =>  '获取数据成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'statuss'    =>  $this->selfModel['statuss'],
+                'isshows'    =>  $this->selfModel['isshows'],
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 根据 uid、from、to 获取数据集合
+     */
+    public function getOpinionsByTime()
+    {
+        $uid = $_POST['uid'];
+        $from = $_POST['from'];
+        $to = $_POST['to'];
+        if (!$uid) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        if (!$from || $to) {
+            $models = OpinionModel::where('uid',$uid)
+                ->where('isshow',2)
+                ->get();
+        } else {
+            $models = OpinionModel::where('uid',$uid)
+                ->where('created_at','>',$from)
+                ->where('isshow',2)
+                ->get();
+        }
+        if (!count($models)) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        //整理数据
+        $datas = array();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['username'] = $model->getUName();
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['statusName'] = $model->getStatusName();
+            $datas[$k]['isShowName'] = $model->getIsShow();
+        }
+        $rstArr = [
+            'error' => [
+                'code'  =>  0,
+                'msg'   =>  '获取数据成功！',
+            ],
+            'data'  =>  $datas,
+            'model' =>  [
+                'statuss'    =>  $this->selfModel['statuss'],
+                'isShows'    =>  $this->selfModel['isshows'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -111,8 +177,8 @@ class OpinionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $opinionModel = OpinionModel::find($id);
-        if (!$opinionModel) {
+        $model = OpinionModel::find($id);
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -152,8 +218,8 @@ class OpinionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $opinionModel = OpinionModel::find($id);
-        if (!$opinionModel) {
+        $model = OpinionModel::find($id);
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -162,18 +228,22 @@ class OpinionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($opinionModel);
-        $datas['username'] = $opinionModel->getUName();
-        $datas['createTime'] = $opinionModel->createTime();
-        $datas['updateTime'] = $opinionModel->updateTime();
-        $datas['statusName'] = $opinionModel->getStatusName();
-        $datas['isShowName'] = $opinionModel->getIsShow();
+        $datas = $this->objToArr($model);
+        $datas['username'] = $model->getUName();
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $datas['statusName'] = $model->getStatusName();
+        $datas['isShowName'] = $model->getIsShow();
         $rstArr = [
             'error' => [
                 'code'  =>  0,
                 'msg'   =>  '获取数据成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'statuss'    =>  $this->selfModel['statuss'],
+                'isShows'    =>  $this->selfModel['isshows'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -244,6 +314,81 @@ class OpinionController extends BaseController
             'error' => [
                 'code'  =>  0,
                 'msg'   =>  '销毁成功！',
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 设置意见状态
+     */
+    public function setStatus()
+    {
+        $id = $_POST['id'];
+        $status = $_POST['status'];
+        $remarks = $_POST['remarks'];
+        if (!$id || !$status) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数错误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        if ($status==4 && !$remarks) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -3,
+                    'msg'   =>  '不满意时，理由必填！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = OpinionModel::find($id);
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $data = [
+            'status'    =>  $status,
+            'remarks'   =>  $remarks,
+        ];
+        OpinionModel::where('id',$id)->update($data);
+        $rstArr = [
+            'error' => [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 清空表
+     */
+    public function clearTable()
+    {
+        $models = OpinionModel::all();
+        if (!count($models)) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '表中没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        OpinionModel::truncate();
+        $rstArr = [
+            'error' => [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
             ],
         ];
         echo json_encode($rstArr);exit;

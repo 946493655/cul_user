@@ -16,12 +16,12 @@ $app->get('/', function () use ($app) {
 });
 
 
-/**
- * get请求，返回数据
- */
-$app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], function () use ($app) {
-    $app->get('user', 'UserController@index');
-});
+///**
+// * get请求，返回数据
+// */
+//$app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], function () use ($app) {
+//    $app->get('user', 'UserController@index');
+//});
 
 
 /**
@@ -39,8 +39,11 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('user/modify', 'UserController@update');
     $app->post('user/getusersbytime', 'UserController@getUsersByTime');
     $app->post('user/auth', 'UserController@setAuth');
+    $app->post('user/head', 'UserController@setHeadImg');
+    $app->post('user/modifypwd', 'UserController@updatePwd');
     //用户参数
     $app->post('user/userparam', 'UserController@getUserParamByUid');
+    $app->post('userparam/persontopbg', 'UserParamController@setTopBg');
     //个人资料
     $app->post('person/one', 'PersonController@getOnePerson');
     $app->post('person/add', 'PersonController@store');
@@ -50,11 +53,14 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('company/add', 'CompanyController@store');
     $app->post('company/show', 'CompanyController@show');
     //好友管理
-    $app->post('frield/list', 'CompanyController@getFrieldsByUid');
-    $app->post('frield/apply', 'CompanyController@getApply');
-    $app->post('frield/pass', 'CompanyController@getPass');
-    $app->post('frield/refuse', 'CompanyController@getRefuse');
-    $app->post('frield/del', 'CompanyController@setDel');
+    $app->post('frield', 'UserFrieldController@index');
+    $app->post('frield/add', 'UserFrieldController@getApply');
+    $app->post('frield/auth', 'UserFrieldController@setFrieldAuth');
+    $app->post('frield/del', 'UserFrieldController@setDel');
+    $app->post('frield/userfrield', 'UserFrieldController@getFrieldsByUid');
+    $app->post('frield/frieldsbymenu', 'UserFrieldController@getFrieldsByMenu');
+    $app->post('frield/newfrields', 'UserFrieldController@getNewFrields');
+    $app->post('frield/onefrield', 'UserFrieldController@getOneFrield');
     //用户心声
     $app->post('uservoice', 'UserVoiceController@index');
     $app->post('uservoice/add', 'UserVoiceController@store');
@@ -67,16 +73,34 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('opinion/show', 'OpinionController@show');
     $app->post('opinion/isdel', 'OpinionController@setDel');
     $app->post('opinion/delete', 'OpinionController@forceDelete');
+    $app->post('opinion/opinionsbytime', 'OpinionController@getOpinionsByTime');
+    $app->post('opinion/setstatus', 'OpinionController@setStatus');
+    $app->post('opinion/clear', 'OpinionController@clearTable');
 });
 
 //活动管理
 $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Activity'], function () use ($app) {
     //签到管理
     $app->post('sign', 'SignController@index');
+    $app->post('sign/all', 'SignController@all');
+    $app->post('sign/getsignsbytime', 'SignController@getSignsByTime');
+    $app->post('sign/signlistbytime', 'SignController@getSignListByTime');
     $app->post('sign/add', 'SignController@store');
     //金币管理
-    $app->post('gold', 'SignController@index');
-    $app->post('gold/add', 'SignController@store');
+    $app->post('gold', 'GoldController@index');
+    $app->post('gold/add', 'GoldController@store');
+    //红包管理
+    $app->post('tip', 'TipController@index');
+    $app->post('tip/add', 'TipController@store');
+    $app->post('tip/tipbyuid', 'TipController@getTipByUid');
+    //钱包管理
+    $app->post('wallet', 'WalletController@index');
+    $app->post('wallet/add', 'WalletController@store');
+    $app->post('wallet/modify', 'WalletController@update');
+    $app->post('wallet/modifyVal', 'WalletController@updateVal');
+    $app->post('wallet/walletbyuid', 'WalletController@getWalletByUid');
+    $app->post('wallet/convert', 'WalletController@setConvert');
+    $app->post('wallet/show', 'WalletController@show');
 });
 
 //管理员管理
@@ -87,6 +111,8 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Admin'], f
     $app->post('log/logout', 'LogController@logout');
     $app->post('log/getlogsbytime', 'LogController@getLogsByTime');
     $app->post('log/show', 'LogController@show');
+    $app->post('log/first', 'LogController@getRegistLog');
+    $app->post('log/last', 'LogController@getLastLog');
     //管理员管理
     $app->post('admin', 'AdminController@index');
     $app->post('admin/one', 'AdminController@getOneAdmin');

@@ -51,9 +51,9 @@ class CompanyModel extends BaseModel
 
     }
 
-    public function getLogo()
-    {
-        $comMainModel = ComMainModel::where('cid',$this->id)->first();
-        return $comMainModel->logo;
-    }
+//    public function getLogo()
+//    {
+//        $comMainModel = ComMainModel::where('cid',$this->id)->first();
+//        return $comMainModel->logo;
+//    }
 }

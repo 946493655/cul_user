@@ -18,11 +18,11 @@ class AdminController extends BaseController
         $page = isset($_POST['page'])?$_POST['page']:1;         //页码，默认第一页
         $start = $limit * ($page - 1);      //记录起始id
 
-        $adminModels = AdminModel::orderBy('id','desc')
+        $models = AdminModel::orderBy('id','desc')
             ->skip($start)
             ->take($limit)
             ->get();
-        if (!count($adminModels)) {
+        if (!count($models)) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -33,11 +33,11 @@ class AdminController extends BaseController
         }
         //整理数据
         $datas = array();
-        foreach ($adminModels as $k=>$adminModel) {
-            $datas[$k] = $this->objToArr($adminModel);
-            $datas[$k]['roleName'] = $adminModel->getRoleName();
-            $datas[$k]['createTime'] = $adminModel->createTime();
-            $datas[$k]['updateTime'] = $adminModel->updateTime();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['roleName'] = $model->getRoleName();
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
         }
         $rstArr = [
             'error' => [
@@ -64,8 +64,8 @@ class AdminController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $adminModel = AdminModel::find($admin_id);
-        if (!$adminModel) {
+        $model = AdminModel::find($admin_id);
+        if (!$model) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -74,10 +74,10 @@ class AdminController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($adminModel);
-        $datas['roleName'] = $adminModel->getRoleName();
-        $datas['createTime'] = $adminModel->createTime();
-        $datas['updateTime'] = $adminModel->updateTime();
+        $datas = $this->objToArr($model);
+        $datas['roleName'] = $model->getRoleName();
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
         $rstArr = [
             'error' => [
                 'code'  =>  0,
@@ -103,8 +103,8 @@ class AdminController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $adminModel = AdminModel::where('username',$uname)->first();
-        if (!$adminModel) {
+        $model = AdminModel::where('username',$uname)->first();
+        if (!$model) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -113,10 +113,10 @@ class AdminController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($adminModel);
-        $datas['roleName'] = $adminModel->getRoleName();
-        $datas['createTime'] = $adminModel->createTime();
-        $datas['updateTime'] = $adminModel->updateTime();
+        $datas = $this->objToArr($model);
+        $datas['roleName'] = $model->getRoleName();
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
         $rstArr = [
             'error' => [
                 'code'  =>  0,
@@ -187,8 +187,8 @@ class AdminController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $adminModel = AdminModel::find($id);
-        if (!$adminModel) {
+        $model = AdminModel::find($id);
+        if (!$model) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -231,8 +231,8 @@ class AdminController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $adminModel = AdminModel::find($id);
-        if (!$adminModel) {
+        $model = AdminModel::find($id);
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,

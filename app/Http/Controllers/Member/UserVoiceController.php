@@ -9,6 +9,11 @@ class UserVoiceController extends BaseController
      * 用户心声
      */
 
+    public function __construct()
+    {
+        $this->selfModel = new UserVoiceModel();
+    }
+
     /**
      * 列表
      */
@@ -18,11 +23,11 @@ class UserVoiceController extends BaseController
         $page = isset($_POST['page'])?$_POST['page']:1;         //页码，默认第一页
         $start = $limit * ($page - 1);      //记录起始id
 
-        $voiceModels = UserVoiceModel::orderBy('id','desc')
+        $models = UserVoiceModel::orderBy('id','desc')
             ->skip($start)
             ->take($limit)
             ->get();
-        if (!count($voiceModels)) {
+        if (!count($models)) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -33,12 +38,13 @@ class UserVoiceController extends BaseController
         }
         //整理数据
         $datas = array();
-        foreach ($voiceModels as $k=>$voiceModel) {
-            $datas[$k] = $this->objToArr($voiceModel);
-            $datas[$k]['username'] = $voiceModel->getUName();
-            $datas[$k]['isShowName'] = $voiceModel->getIsShow();
-            $datas[$k]['createTime'] = $voiceModel->createTime();
-            $datas[$k]['updateTime'] = $voiceModel->updateTime();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['username'] = $model->getUName();
+            $datas[$k]['isShowName'] = $model->getIsShow();
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['userType'] = $model->getGenreName();
         }
         $rstArr = [
             'error' => [
@@ -46,6 +52,9 @@ class UserVoiceController extends BaseController
                 'msg'   =>  '获取数据成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'isshows'   =>  $this->selfModel['isshows'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -97,8 +106,8 @@ class UserVoiceController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $userVoice = UserVoiceModel::find($id);
-        if (!$userVoice) {
+        $model = UserVoiceModel::find($id);
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -107,17 +116,21 @@ class UserVoiceController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($userVoice);
-        $datas['username'] = $userVoice->getUName();
-        $datas['isShowName'] = $userVoice->getIsShow();
-        $datas['createTime'] = $userVoice->createTime();
-        $datas['updateTime'] = $userVoice->updateTime();
+        $datas = $this->objToArr($model);
+        $datas['username'] = $model->getUName();
+        $datas['isShowName'] = $model->getIsShow();
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $datas['userType'] = $model->getGenreName();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'isshows'   =>  $this->selfModel['isshows'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -138,8 +151,8 @@ class UserVoiceController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $userVoice = UserVoiceModel::find($id);
-        if (!$userVoice) {
+        $model = UserVoiceModel::find($id);
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,

@@ -9,6 +9,11 @@ class LogController extends BaseController
      * 用户、管理员日志
      */
 
+    public function __construct()
+    {
+        $this->selfModel = new LogModel();
+    }
+
     /**
      * 列表
      */
@@ -29,29 +34,28 @@ class LogController extends BaseController
             echo json_encode($rstArr);exit;
         }
 
-        $logModels = LogModel::where('genre',$genre)
+        $models = LogModel::where('genre',$genre)
             ->orderBy('id','desc')
             ->skip($start)
             ->take($limit)
             ->get();
-        if (!count($logModels)) {
+        if (!count($models)) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
                     'msg'   =>  '未获取到数据！',
                 ],
-                'data'  =>  [],
             ];
             echo json_encode($rstArr);exit;
         }
         //整理数据
         $datas = array();
-        foreach ($logModels as $k=>$logModel) {
-            $datas[$k] = $this->objToArr($logModel);
-            $datas[$k]['username'] = $logModel->getUname();
-            $datas[$k]['genreName'] = $logModel->getGenreName();
-            $datas[$k]['loginTime'] = $logModel->loginTime();
-            $datas[$k]['logoutTime'] = $logModel->logoutTime();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['username'] = $model->getUname();
+            $datas[$k]['genreName'] = $model->getGenreName();
+            $datas[$k]['loginTime'] = $model->loginTime();
+            $datas[$k]['logoutTime'] = $model->logoutTime();
         }
         $rstArr = [
             'error' => [
@@ -59,6 +63,9 @@ class LogController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'genres'    =>  $this->selfModel['genres'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -80,16 +87,16 @@ class LogController extends BaseController
             echo json_encode($rstArr);exit;
         }
         if ($time==0) {
-            $logModels = LogModel::where('genre',$genre)
+            $models = LogModel::where('genre',$genre)
                 ->distinct('uid')
                 ->get();
         } elseif ($time) {
-            $logModels = LogModel::where('genre',$genre)
+            $models = LogModel::where('genre',$genre)
                 ->where('loginTime','>',time()-3600)
                 ->distinct('uid')
                 ->get();
         }
-        if (!count($logModels)) {
+        if (!count($models)) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -101,12 +108,12 @@ class LogController extends BaseController
         }
         //整理数据
         $datas = array();
-        foreach ($logModels as $k=>$logModel) {
-            $datas[$k] = $this->objToArr($logModel);
-            $datas[$k]['username'] = $logModel->getUname();
-            $datas[$k]['genreName'] = $logModel->getGenreName();
-            $datas[$k]['loginTime'] = $logModel->loginTime();
-            $datas[$k]['logoutTime'] = $logModel->logoutTime();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['username'] = $model->getUname();
+            $datas[$k]['genreName'] = $model->getGenreName();
+            $datas[$k]['loginTime'] = $model->loginTime();
+            $datas[$k]['logoutTime'] = $model->logoutTime();
         }
         $rstArr = [
             'error' => [
@@ -114,6 +121,9 @@ class LogController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'genres'    =>  $this->selfModel['genres'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -199,8 +209,8 @@ class LogController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $logModel = LogModel::find($id);
-        if (!$logModel) {
+        $model = LogModel::find($id);
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -209,17 +219,106 @@ class LogController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($logModel);
-        $datas['username'] = $logModel->getUname();
-        $datas['genreName'] = $logModel->getGenreName();
-        $datas['loginTime'] = $logModel->loginTime();
-        $datas['logoutTime'] = $logModel->logoutTime();
+        $datas = $this->objToArr($model);
+        $datas['username'] = $model->getUname();
+        $datas['genreName'] = $model->getGenreName();
+        $datas['loginTime'] = $model->loginTime();
+        $datas['logoutTime'] = $model->logoutTime();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'genres'    =>  $this->selfModel['genres'],
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 通过 uid 获取注册日志
+     */
+    public function getRegistLog()
+    {
+        $uid = $_POST['uid'];
+        if (!$uid) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = LogModel::where('uid',$uid)->orderBy('id','asc')->first();
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $datas = $this->objToArr($model);
+        $datas['username'] = $model->getUname();
+        $datas['genreName'] = $model->getGenreName();
+        $datas['loginTime'] = $model->loginTime();
+        $datas['logoutTime'] = $model->logoutTime();
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '获取成功！',
+            ],
+            'data'  =>  $datas,
+            'model' =>  [
+                'genres'    =>  $this->selfModel['genres'],
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 通过 uid 获取用户前一次访问日志
+     */
+    public function getLastLog()
+    {
+        $uid = $_POST['uid'];
+        if (!$uid) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $models = LogModel::where('uid',$uid)->orderBy('id','asc')->paginate(2);
+        if (count($models)<2) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $datas = $this->objToArr($models[1]);
+        $datas['username'] = $models[1]->getUname();
+        $datas['genreName'] = $models[1]->getGenreName();
+        $datas['loginTime'] = $models[1]->loginTime();
+        $datas['logoutTime'] = $models[1]->logoutTime();
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '获取成功！',
+            ],
+            'data'  =>  $datas,
+            'model' =>  [
+                'genres'    =>  $this->selfModel['genres'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }

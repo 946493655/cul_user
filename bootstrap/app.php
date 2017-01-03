@@ -25,7 +25,7 @@ $app = new Laravel\Lumen\Application(
 
 // $app->withFacades();       //数据库使用DB
 
- $app->withEloquent();      //数据库使用Model
+ $app->withEloquent();        //数据库使用Model
 
 /*
 |--------------------------------------------------------------------------

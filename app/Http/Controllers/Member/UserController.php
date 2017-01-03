@@ -13,6 +13,11 @@ class UserController extends BaseController
      * 用户
      */
 
+    public function __construct()
+    {
+        $this->selfModel = new UserModel();
+    }
+
     /**
      * 用户列表
      */
@@ -23,39 +28,16 @@ class UserController extends BaseController
         $limit = (isset($_POST['limit'])&&$_POST['limit'])?$_POST['limit']:$this->limit;     //每页显示记录数
         $page = (isset($_POST['page'])&&$_POST['page'])?$_POST['page']:1;         //页码，默认第一页
         $start = $limit * ($page - 1);      //记录起始id
-        //转化isuser为数组
-        if ($isuser) {
-            $isuser = is_array($isuser)?$isuser:[$isuser];
-        } else {
-            $isuser = array();
-        }
 
-        if ($isuser && $isauth) {
-            $userModels = UserModel::whereIn('isuser',$isuser)
-                ->where('isauth',$isauth)
-                ->orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        } elseif (!$isuser && $isauth) {
-            $userModels = UserModel::where('isauth',$isauth)
-                ->orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        } elseif ($isuser && !$isauth) {
-            $userModels = UserModel::whereIn('isuser',$isuser)
-                ->orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        } elseif (!$isuser && !$isauth) {
-            $userModels = UserModel::orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        }
-        if (!count($userModels)) {
+        $isuserArr = $isuser?[$isuser]:[0,1,2,3,4,5,6,7,50];        //转化isuser为数组
+        $isauthArr = $isauth?[$isauth]:[0,1,2,3];                   //转化isauth为数组
+        $models = UserModel::whereIn('isuser',$isuserArr)
+            ->whereIn('isauth',$isauthArr)
+            ->orderBy('id','desc')
+            ->skip($start)
+            ->take($limit)
+            ->get();
+        if (!count($models)) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -66,13 +48,13 @@ class UserController extends BaseController
         }
         //整理数据
         $datas = array();
-        foreach ($userModels as $k=>$userModel) {
-            $datas[$k] = $this->objToArr($userModel);
-            $datas[$k]['createTime'] = $userModel->createTime();
-            $datas[$k]['updateTime'] = $userModel->updateTime();
-            $datas[$k]['authType'] = $userModel->authType();
-            $datas[$k]['userType'] = $userModel->userType();
-            $datas[$k]['vip'] = $userModel->isvip();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['authType'] = $model->authType();
+            $datas[$k]['userType'] = $model->userType();
+            $datas[$k]['vip'] = $model->isvip();
         }
         $rstArr = [
             'error' => [
@@ -80,6 +62,11 @@ class UserController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'isAuths'    =>  $this->selfModel['isauths'],
+                'isUsers'    =>  $this->selfModel['isusers'],
+                'isVips'    =>  $this->selfModel['isvips'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -100,18 +87,18 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         if ($time=='') {
-            $userModels = UserModel::all();
+            $models = UserModel::all();
         } elseif ($time==0) {
-            $userModels = UserModel::where('isauth','>',0)
+            $models = UserModel::where('isauth','>',0)
                 ->orderBy('id','desc')
                 ->paginate($this->limit);
         } elseif ($time) {
-            $userModels = UserModel::where('isauth','>',0)
+            $models = UserModel::where('isauth','>',0)
                 ->where('created_at','>',$time)
                 ->orderBy('id','desc')
                 ->paginate($this->limit);
         }
-        if (!count($userModels)) {
+        if (!count($models)) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -122,14 +109,14 @@ class UserController extends BaseController
         }
         //整理数据
         $datas = array();
-        foreach ($userModels as $k=>$userModel) {
-            $datas[$k] = $this->objToArr($userModel);
-            $datas[$k]['createTime'] = $userModel->createTime();
-            $datas[$k]['updateTime'] = $userModel->updateTime();
-            $datas[$k]['userType'] = $userModel->userType();
-            $datas[$k]['authType'] = $userModel->authType();
-            $datas[$k]['userType'] = $userModel->userType();
-            $datas[$k]['vip'] = $userModel->isvip();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['userType'] = $model->userType();
+            $datas[$k]['authType'] = $model->authType();
+            $datas[$k]['userType'] = $model->userType();
+            $datas[$k]['vip'] = $model->isvip();
         }
         $rstArr = [
             'error' => [
@@ -137,6 +124,11 @@ class UserController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'isAuths'    =>  $this->selfModel['isauths'],
+                'isUsers'    =>  $this->selfModel['isusers'],
+                'isVips'    =>  $this->selfModel['isvips'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -157,8 +149,8 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
 
-        $userModel = UserModel::find($uid);
-        if (!$userModel) {
+        $model = UserModel::find($uid);
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -168,20 +160,25 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         //整理数据
-        $datas = $this->objToArr($userModel);
-        $datas['createTime'] = $userModel->createTime();
-        $datas['updateTime'] = $userModel->updateTime();
+        $datas = $this->objToArr($model);
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
         $datas['person'] = $this->getPerson($uid);
         $datas['company'] = $this->getCompany($uid);
-        $datas['authType'] = $userModel->authType();
-        $datas['userType'] = $userModel->userType();
-        $datas['vip'] = $userModel->isvip();
+        $datas['authType'] = $model->authType();
+        $datas['userType'] = $model->userType();
+        $datas['vip'] = $model->isvip();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '成功获取用户信息！'
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'isAuths'    =>  $this->selfModel['isauths'],
+                'isUsers'    =>  $this->selfModel['isusers'],
+                'isVips'    =>  $this->selfModel['isvips'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -193,6 +190,7 @@ class UserController extends BaseController
     {
         if (!$uid) { return array(); }
         $personModel = PersonModel::where('uid',$uid)->first();
+        if ($personModel) { $personModel->sexName = $personModel->sexName(); }
         return $personModel ? $this->objToArr($personModel) : [];
     }
 
@@ -222,8 +220,8 @@ class UserController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $userModel = UserModel::where('username',$uname)->first();
-        if (!$userModel) {
+        $model = UserModel::where('username',$uname)->first();
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -233,20 +231,25 @@ class UserController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($userModel);
-        $datas['createTime'] = $userModel->createTime();
-        $datas['updateTime'] = $userModel->updateTime();
-        $datas['person'] = $this->getPerson($userModel->id);
-        $datas['company'] = $this->getCompany($userModel->id);
-        $datas['authType'] = $userModel->authType();
-        $datas['userType'] = $userModel->userType();
-        $datas['vip'] = $userModel->isvip();
+        $datas = $this->objToArr($model);
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $datas['person'] = $this->getPerson($model->id);
+        $datas['company'] = $this->getCompany($model->id);
+        $datas['authType'] = $model->authType();
+        $datas['userType'] = $model->userType();
+        $datas['vip'] = $model->isvip();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '成功获取用户数据！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'isAuths'    =>  $this->selfModel['isauths'],
+                'isUsers'    =>  $this->selfModel['isusers'],
+                'isVips'    =>  $this->selfModel['isvips'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -273,10 +276,10 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         //判断是否存在用户
-        $userModel = UserModel::where('username',$uname)
+        $model = UserModel::where('username',$uname)
             ->where('pwd',$pwd)
             ->first();
-        if ($userModel) {
+        if ($model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -296,7 +299,7 @@ class UserController extends BaseController
         ];
         UserModel::create($data);
 
-        $userModel2 = UserModel::where('username',$uname)
+        $model2 = UserModel::where('username',$uname)
             ->where('pwd',$pwd)
             ->first();
         //登陆加入用户日志表
@@ -307,7 +310,7 @@ class UserController extends BaseController
             'ipaddress' =>  $ipaddress,
             'action'    =>  $action,
         ];
-        if ($this->insertLog($userModel2,$log) != true) {
+        if ($this->insertLog($model2,$log) != true) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -3,
@@ -317,15 +320,20 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         //整理返回数据
-        $datas = $this->objToArr($userModel2);
-        $datas['person'] = $this->getPerson($userModel2->id);
-        $datas['company'] = $this->getCompany($userModel2->id);
+        $datas = $this->objToArr($model2);
+        $datas['person'] = $this->getPerson($model2->id);
+        $datas['company'] = $this->getCompany($model2->id);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '注册成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'isAuths'    =>  $this->selfModel['isauths'],
+                'isUsers'    =>  $this->selfModel['isusers'],
+                'isVips'    =>  $this->selfModel['isvips'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -352,10 +360,10 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         //判断是否存在用户
-        $userModel = UserModel::where('username',$uname)
+        $model = UserModel::where('username',$uname)
             ->where('pwd',$pwd)
             ->first();
-        if (!$userModel) {
+        if (!$model) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
@@ -372,7 +380,7 @@ class UserController extends BaseController
             'ipaddress' =>  $ipaddress,
             'action'    =>  $action,
         ];
-        if ($this->insertLog($userModel,$log) != true) {
+        if ($this->insertLog($model,$log) != true) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -3,
@@ -382,17 +390,22 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         //最近登录更新
-        UserModel::where('id',$userModel->id)->update(['lastLogin'=> time()]);
+        UserModel::where('id',$model->id)->update(['lastLogin'=> time()]);
         //整理返回数据
-        $datas = $this->objToArr($userModel);
-        $datas['person'] = $this->getPerson($userModel->id);
-        $datas['company'] = $this->getCompany($userModel->id);
+        $datas = $this->objToArr($model);
+        $datas['person'] = $this->getPerson($model->id);
+        $datas['company'] = $this->getCompany($model->id);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '登录成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [
+                'isAuths'    =>  $this->selfModel['isauths'],
+                'isUsers'    =>  $this->selfModel['isusers'],
+                'isVips'    =>  $this->selfModel['isvips'],
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -429,6 +442,8 @@ class UserController extends BaseController
         $tel = $_POST['tel'];
         $mobile = $_POST['mobile'];
         $isuser = $_POST['isuser'];
+        $username = isset($_POST['username'])?$_POST['username']:'';
+        $address = isset($_POST['address'])?$_POST['address']:'';
         if (!$id) {
             $rstArr = [
                 'error' =>  [
@@ -439,17 +454,19 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         //假如用户类型为0，则用户类型是原记录类型
-        if ($isuser==0) {
-            $userModel = UserModel::find($id);
-            $isuser = $userModel->isuser;
-        }
+        $model = UserModel::find($id);
+        if ($isuser==0) { $isuser = $model->isuser; }
+        if ($username=='') { $username = $model->username; }
+        if ($address=='') { $address = $model->address; }
         $data = [
             'email' =>  $email,
             'qq'    =>  $qq,
             'tel'   =>  $tel,
             'mobile'    =>  $mobile,
             'isuser'    =>  $isuser,
-            'update_at' =>  time(),
+            'username'  =>  $username,
+            'address'  =>  $address,
+            'updated_at' =>  time(),
         ];
         UserModel::where('id',$id)->update($data);
         $rstArr = [
@@ -460,6 +477,125 @@ class UserController extends BaseController
         ];
         echo json_encode($rstArr);exit;
     }
+
+    /**
+     * 更新用户密码
+     */
+    public function updatePwd()
+    {
+        $id = $_POST['id'];
+        $newpwdhash = $_POST['newpwdhash'];
+        $newpwd = $_POST['newpwd'];
+        if (!$id || !$newpwdhash || !$newpwd) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数错误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = UserModel::find($id);
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有用户！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $data = [
+            'password'  =>  $newpwdhash,
+            'pwd'       =>  $newpwd,
+        ];
+        UserModel::where('id',$id)->update($data);
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '更新成功！',
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 设置审核
+     */
+    public function setAuth()
+    {
+        $id = $_POST['uid'];
+        $auth = $_POST['auth'];
+        if (!$id || !$auth) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = UserModel::find($id);
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        UserModel::where('id',$id)->update(['isauth'=> $auth]);
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 设置头像
+     */
+    public function setHeadImg()
+    {
+        $id = $_POST['uid'];
+        $pic_id = $_POST['pic_id'];
+        if (!$id || !$pic_id) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = UserModel::find($id);
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        UserModel::where('id',$id)->update(['head'=> $pic_id]);
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * =====================
+     * 下面是用户参数方法
+     * =====================
+     */
 
     /**
      * 获取用户参数
@@ -495,48 +631,15 @@ class UserController extends BaseController
 //            $param = UserParamsModel::where('uid',$uid)->first();
         }
         $datas = $this->objToArr($param);
+        $datas['created_at'] = $param->createTime();
+        $datas['updated_at'] = $param->createTime();
+//        $datas['picUrl'] = $param->getPicUrl();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '获取参数成功！',
             ],
             'data'  =>  $datas,
-        ];
-        echo json_encode($rstArr);exit;
-    }
-
-    /**
-     * 设置审核
-     */
-    public function setAuth()
-    {
-        $id = $_POST['uid'];
-        $auth = $_POST['auth'];
-        if (!$id || !$auth) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -1,
-                    'msg'   =>  '参数有误！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $userModel = UserModel::find($id);
-        if (!$userModel) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -2,
-                    'msg'   =>  '没有数据！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        UserModel::where('id',$id)->update(['isauth'=> $auth]);
-        $rstArr = [
-            'error' =>  [
-                'code'  =>  0,
-                'msg'   =>  '操作成功！',
-            ],
         ];
         echo json_encode($rstArr);exit;
     }

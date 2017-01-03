@@ -11,10 +11,10 @@ class OpinionModel extends BaseModel
         'id','name','intro','uid','status','remarks','isshow','created_at','updated_at',
     ];
     protected $statuss = [
-        '所有','新意见','处理中','不满意','满意',
+        '所有','新意见','处理中','已完成','不满意','满意',
     ];
     protected $isshows = [
-        1=>'不显示','心声',
+        1=>'不显示','显示',
     ];
 
     public function getUName()

@@ -16,11 +16,11 @@ class RoleController extends BaseController
         $page = isset($_POST['page'])?$_POST['page']:1;         //页码，默认第一页
         $start = $limit * ($page - 1);      //记录起始id
 
-        $roleModels = RoleModel::orderBy('id','desc')
+        $models = RoleModel::orderBy('id','desc')
             ->skip($start)
             ->take($limit)
             ->get();
-        if (!count($roleModels)) {
+        if (!count($models)) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -31,11 +31,11 @@ class RoleController extends BaseController
         }
         //整理数据
         $datas = array();
-        foreach ($roleModels as $k=>$roleModel) {
-            $datas[$k] = $this->objToArr($roleModel);
-            $datas[$k]['createTime'] = $roleModel->createTime();
-            $datas[$k]['updateTime'] = $roleModel->updateTime();
-            $datas[$k]['roleActions'] = $roleModel->getRoleActions();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['roleActions'] = $model->getRoleActions();
         }
         $rstArr = [
             'error' => [
@@ -43,6 +43,7 @@ class RoleController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -125,8 +126,8 @@ class RoleController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $roleModel = RoleModel::find($id);
-        if (!$roleModel) {
+        $model = RoleModel::find($id);
+        if (!$model) {
             $rstArr = [
                 'error' => [
                     'code'  =>  -2,
@@ -135,17 +136,18 @@ class RoleController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($roleModel);
-        $datas['createTime'] = $roleModel->createTime();
-        $datas['updateTime'] = $roleModel->updateTime();
-        $datas['roleActions'] = $roleModel->getRoleActions();
-        $datas['actionIds'] = $roleModel->getActionArr();
+        $datas = $this->objToArr($model);
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $datas['roleActions'] = $model->getRoleActions();
+        $datas['actionIds'] = $model->getActionArr();
         $rstArr = [
             'error' => [
                 'code'  =>  0,
                 'msg'   =>  '修改成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }

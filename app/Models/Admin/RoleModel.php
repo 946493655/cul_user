@@ -10,11 +10,6 @@ class RoleModel extends BaseModel
         'id','name','intro','created_at','updated_at',
     ];
 
-//    public function admin()
-//    {
-//        return AdminModel::where('role_id',$this->id)->get();
-//    }
-
     /**
      * 获取操作
      */

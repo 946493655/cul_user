@@ -9,6 +9,11 @@ class PersonController extends BaseController
      * 个人资料
      */
 
+    public function __construct()
+    {
+        $this->selfModel = new PersonModel();
+    }
+
     /**
      * 通过 uid 获取个人资料
      */
@@ -36,12 +41,14 @@ class PersonController extends BaseController
             echo json_encode($rstArr);exit;
         }
         $datas = $this->objToArr($personModel);
+        $datas['sexName'] = $personModel->sexName();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
                 'msg'   =>  '个人信息获取成功！',
             ],
             'data'  =>  $datas,
+            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -82,4 +89,9 @@ class PersonController extends BaseController
         ];
         echo json_encode($rstArr);exit;
     }
+
+    /**
+     * 更新个人资料
+     */
+//    public function update(){}
 }

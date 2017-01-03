@@ -1,13 +1,15 @@
 <?php
-namespace App\Models;
+namespace App\Models\Wallet;
 
-class UserSignModel extends BaseModel
+use App\Models\BaseModel;
+
+class SignModel extends BaseModel
 {
     /**
      * 这是用户签到表
      */
 
-    protected $table = 'bs_user_sign';
+    protected $table = 'bs_sign';
     protected $fillable = [
         'id','uid','reward','created_at','updated_at',
     ];
@@ -28,16 +30,14 @@ class UserSignModel extends BaseModel
     /**
      * 当前用户签到状态
      */
-    public function getSignStatus($uid,$dateStr)
+    public function getSignStatus($uid)
     {
-        $dateArr = explode('-',$dateStr);
-        $day = strlen($dateArr[2])==1?'0'.$dateArr[2]:$dateArr['2'];
-        $date = $dateArr[0].$dateArr[1].$day;
+        $date = date('Ymd',$this->created_at);
         $dayCurr = date('Ymd',time());
 
         $fromtime = $date.'000000';      //凌晨0点
         $totime = $date.'240000';      //夜里24点
-        $userSignModel = UserSignModel::where('uid',$uid)
+        $userSignModel = SignModel::where('uid',$uid)
             ->where('created_at','>',strtotime($fromtime))
             ->where('created_at','<',strtotime($totime))
             ->first();
