@@ -367,7 +367,7 @@ class UserController extends BaseController
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
-                    'msg'   =>  '没有此用户！',
+                    'msg'   =>  '用户名或密码错误！',
                 ],
             ];
             echo json_encode($rstArr);exit;
