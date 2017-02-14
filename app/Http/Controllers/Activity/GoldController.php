@@ -8,6 +8,7 @@ class GoldController extends BaseController
 {
     /**
      * 金币
+     * 主要用于用户操作后的奖励
      */
 
     public function __construct()

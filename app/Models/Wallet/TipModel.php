@@ -7,9 +7,10 @@ class TipModel extends BaseModel
 {
     /**
      * 这是用户红包表
+     * 主要用于活动、节日等给用户的福利
      */
 
-    protected $table = 'bs_tip';
+    protected $table = 'user_tip';
     protected $fillable = [
         'id','uid','type','tip','created_at','updated_at',
     ];

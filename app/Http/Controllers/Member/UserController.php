@@ -62,11 +62,6 @@ class UserController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'isAuths'    =>  $this->selfModel['isauths'],
-                'isUsers'    =>  $this->selfModel['isusers'],
-                'isVips'    =>  $this->selfModel['isvips'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -124,11 +119,6 @@ class UserController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'isAuths'    =>  $this->selfModel['isauths'],
-                'isUsers'    =>  $this->selfModel['isusers'],
-                'isVips'    =>  $this->selfModel['isvips'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -174,11 +164,6 @@ class UserController extends BaseController
                 'msg'   =>  '成功获取用户信息！'
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'isAuths'    =>  $this->selfModel['isauths'],
-                'isUsers'    =>  $this->selfModel['isusers'],
-                'isVips'    =>  $this->selfModel['isvips'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -245,11 +230,6 @@ class UserController extends BaseController
                 'msg'   =>  '成功获取用户数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'isAuths'    =>  $this->selfModel['isauths'],
-                'isUsers'    =>  $this->selfModel['isusers'],
-                'isVips'    =>  $this->selfModel['isvips'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -329,11 +309,6 @@ class UserController extends BaseController
                 'msg'   =>  '注册成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'isAuths'    =>  $this->selfModel['isauths'],
-                'isUsers'    =>  $this->selfModel['isusers'],
-                'isVips'    =>  $this->selfModel['isvips'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -401,11 +376,6 @@ class UserController extends BaseController
                 'msg'   =>  '登录成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'isAuths'    =>  $this->selfModel['isauths'],
-                'isUsers'    =>  $this->selfModel['isusers'],
-                'isVips'    =>  $this->selfModel['isvips'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -592,54 +562,21 @@ class UserController extends BaseController
     }
 
     /**
-     * =====================
-     * 下面是用户参数方法
-     * =====================
+     * 获取 model
      */
-
-    /**
-     * 获取用户参数
-     */
-    public function getUserParamByUid()
+    public function getModel()
     {
-        $uid = $_POST['uid'];
-        if (!$uid) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -1,
-                    'msg'   =>  '参数有误！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $param = UserParamsModel::where('uid',$uid)->first();
-        if (!$param) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -2,
-                    'msg'   =>  '没有此用户的自定义参数！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-//            //没有记录，新增记录
-//            $data = [
-//                'uid'   =>  $uid,
-//                'limit' =>  10,     //给个默认值
-//                'created_at'    =>  time(),
-//            ];
-//            UserParamsModel::create($data);
-//            $param = UserParamsModel::where('uid',$uid)->first();
-        }
-        $datas = $this->objToArr($param);
-        $datas['created_at'] = $param->createTime();
-        $datas['updated_at'] = $param->createTime();
-//        $datas['picUrl'] = $param->getPicUrl();
+        $model = [
+            'isAuths'    =>  $this->selfModel['isauths'],
+            'isUsers'    =>  $this->selfModel['isusers'],
+            'isVips'    =>  $this->selfModel['isvips'],
+        ];
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
-                'msg'   =>  '获取参数成功！',
+                'msg'   =>  '操作成功！',
             ],
-            'data'  =>  $datas,
+            'model' =>  $model,
         ];
         echo json_encode($rstArr);exit;
     }

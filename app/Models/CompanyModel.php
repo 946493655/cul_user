@@ -7,7 +7,7 @@ class CompanyModel extends BaseModel
      * 这是用户表model
      */
 
-    protected $table = 'companys';
+    protected $table = 'user_companys';
     protected $fillable = [
         'id','name','genre','area','point','address','yyzzid','uid','sort','areacode','tel','qq','web','fax','zipcode','email','created_at','updated_at',
     ];

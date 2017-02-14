@@ -7,6 +7,7 @@ class TipController extends BaseController
 {
     /**
      * 红包控制器
+     * 主要用于活动、节日等给用户的福利
      */
 
     public function __construct()

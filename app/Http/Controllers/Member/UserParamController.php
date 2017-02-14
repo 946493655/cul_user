@@ -33,19 +33,10 @@ class UserParamController extends BaseController
                 ],
             ];
             echo json_encode($rstArr);exit;
-//            //没有记录，新增记录
-//            $data = [
-//                'uid'   =>  $uid,
-//                'limit' =>  10,     //给个默认值
-//                'created_at'    =>  time(),
-//            ];
-//            UserParamsModel::create($data);
-//            $param = UserParamsModel::where('uid',$uid)->first();
         }
         $datas = $this->objToArr($param);
         $datas['created_at'] = $param->createTime();
         $datas['updated_at'] = $param->createTime();
-//        $datas['picUrl'] = $param->getPicUrl();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,

@@ -9,7 +9,7 @@ class SignModel extends BaseModel
      * 这是用户签到表
      */
 
-    protected $table = 'bs_sign';
+    protected $table = 'user_sign';
     protected $fillable = [
         'id','uid','reward','created_at','updated_at',
     ];

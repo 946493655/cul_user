@@ -8,30 +8,26 @@ class WalletController extends BaseController
 {
     /**
      * 钱包管理
+     * 10签到兑换1福利，30金币兑换1福利，1红包额度兑换1福利
      */
+
+    protected $signToWeal = 10;     //10签到兑换1福利
+    protected $goldToWeal = 30;     //30签到兑换1福利
+    protected $tipToWeal = 1;       //1签到兑换1福利
 
     /**
      * 用户钱包
      */
     public function index()
     {
-        $uid = isset($_POST['uid'])?$_POST['uid']:0;
         $limit = (isset($_POST['limit'])&&$_POST['limit'])?$_POST['limit']:$this->limit;     //每页显示记录数
         $page = isset($_POST['page'])?$_POST['page']:1;         //页码，默认第一页
         $start = $limit * ($page - 1);      //记录起始id
 
-        if ($uid) {
-            $models = WalletModel::where('uid',$uid)
-                ->orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        } else {
-            $models = WalletModel::orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        }
+        $models = WalletModel::orderBy('id','desc')
+            ->skip($start)
+            ->take($limit)
+            ->get();
         if (!count($models)) {
             $rstArr = [
                 'error' => [
@@ -55,7 +51,45 @@ class WalletController extends BaseController
                 'msg'   =>  '操作成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 通过 uid 获取用户钱包
+     */
+    public function getOneByUid()
+    {
+        $uid = $_POST['uid'];
+        if (!$uid) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = WalletModel::where('uid',$uid)->first();
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $datas = $this->objToArr($model);
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $datas['username'] = $model->getUName();
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+            'data'  =>  $datas,
         ];
         echo json_encode($rstArr);exit;
     }
@@ -224,7 +258,6 @@ class WalletController extends BaseController
                 'msg'   =>  '操作成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -247,15 +280,6 @@ class WalletController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-//        if (!$number) {
-//            $rstArr = [
-//                'error' =>  [
-//                    'code'  =>  -2,
-//                    'msg'   =>  '兑换数量不足！',
-//                ],
-//            ];
-//            echo json_encode($rstArr);exit;
-//        }
         if ($type==1 && $number<30) {
             //30签到兑换1福利
             $rstArr = [
@@ -355,8 +379,16 @@ class WalletController extends BaseController
                 'msg'   =>  '操作成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
         ];
         echo json_encode($rstArr);exit;
     }
+
+//    /**
+//     * 获取 model
+//     */
+//    public function getModel()
+//    {
+//        $model = [
+//        ];
+//    }
 }

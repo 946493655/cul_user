@@ -11,6 +11,16 @@ class BaseModel extends Model
 
     public $timestamps = false;
 
+    //isshow：1不显示，2前台列表显示
+    protected $isshows = [
+        1=>'不显示','显示',
+    ];
+
+    public function getIsShow()
+    {
+        return array_key_exists($this->isshow,$this->isshows) ? $this->isshows[$this->isshow] : '';
+    }
+
     /**
      * 由uid得到 用户信息
      */

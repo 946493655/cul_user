@@ -7,7 +7,7 @@ class FrieldModel extends BaseModel
      * 这是用户好友表
      */
 
-    protected $table = 'bs_frield';
+    protected $table = 'user_frield';
     protected $fillable = [
         'id','uid','frield_id','isauth','remarks','remarks2','del','created_at','authTime',
     ];

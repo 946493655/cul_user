@@ -5,7 +5,7 @@ use App\Models\BaseModel;
 
 class AdminModel extends BaseModel
 {
-    protected $table = 'ba_admin';
+    protected $table = 'admin';
     protected $fillable = [
         'id','username','realname','password','pwd','role_id','intro','created_at','updated_at',
     ];

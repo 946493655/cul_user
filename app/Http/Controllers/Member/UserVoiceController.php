@@ -11,6 +11,7 @@ class UserVoiceController extends BaseController
 
     public function __construct()
     {
+        parent::__construct();
         $this->selfModel = new UserVoiceModel();
     }
 
@@ -19,14 +20,27 @@ class UserVoiceController extends BaseController
      */
     public function index()
     {
+        $uid = $_POST['uid'];
+        $isshow = $_POST['isshow'];
         $limit = isset($_POST['limit'])?$_POST['limit']:$this->limit;     //每页显示记录数
         $page = isset($_POST['page'])?$_POST['page']:1;         //页码，默认第一页
         $start = $limit * ($page - 1);      //记录起始id
 
-        $models = UserVoiceModel::orderBy('id','desc')
-            ->skip($start)
-            ->take($limit)
-            ->get();
+        $isshowArr = $isshow ? [$isshow] : [0,1,2];
+        if ($uid) {
+            $models = UserVoiceModel::where('uid',$uid)
+                ->whereIn('isshow',$isshowArr)
+                ->orderBy('id','desc')
+                ->skip($start)
+                ->take($limit)
+                ->get();
+        } else {
+            $models = UserVoiceModel::whereIn('isshow',$isshowArr)
+                ->orderBy('id','desc')
+                ->skip($start)
+                ->take($limit)
+                ->get();
+        }
         if (!count($models)) {
             $rstArr = [
                 'error' =>  [
@@ -52,9 +66,6 @@ class UserVoiceController extends BaseController
                 'msg'   =>  '获取数据成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'isshows'   =>  $this->selfModel['isshows'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -128,9 +139,6 @@ class UserVoiceController extends BaseController
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'isshows'   =>  $this->selfModel['isshows'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -174,6 +182,24 @@ class UserVoiceController extends BaseController
                 'code'  =>  0,
                 'msg'   =>  '更新成功！',
             ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 获取 model
+     */
+    public function getModel()
+    {
+        $model = [
+            'isshows'   =>  $this->selfModel['isshows'],
+        ];
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+            'model' =>  $model,
         ];
         echo json_encode($rstArr);exit;
     }

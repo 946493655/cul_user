@@ -11,6 +11,7 @@ class CompanyController extends BaseController
 
     public function __construct()
     {
+        parent::__construct();
         $this->selfModel = new CompanyModel();
     }
 
@@ -40,7 +41,7 @@ class CompanyController extends BaseController
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
-                    'msg'   =>  '没有公司数据！',
+                    'msg'   =>  '没有数据！',
                 ],
             ];
             echo json_encode($rstArr);exit;
@@ -56,12 +57,9 @@ class CompanyController extends BaseController
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
-                'msg'   =>  '公司数据获取成功！',
+                'msg'   =>  '操作成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'genres' =>  $this->selfModel['genres'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -97,12 +95,9 @@ class CompanyController extends BaseController
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
-                'msg'   =>  '公司资料获取成功！',
+                'msg'   =>  '操作成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'genres' =>  $this->selfModel['genres'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -121,7 +116,7 @@ class CompanyController extends BaseController
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -1,
-                    'msg'   =>  '公司信息参数有误！',
+                    'msg'   =>  '参数有误！',
                 ],
             ];
             echo json_encode($rstArr);exit;
@@ -139,7 +134,7 @@ class CompanyController extends BaseController
             'error' =>  [
                 'code'  =>  [
                     'code'  =>  0,
-                    'msg'   =>  '公司信息添加成功！',
+                    'msg'   =>  '操作成功！',
                 ],
             ],
         ];
@@ -178,11 +173,26 @@ class CompanyController extends BaseController
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'genres' =>  $this->selfModel['genres'],
-            ],
         ];
         echo json_encode($rstArr);exit;
 
+    }
+
+    /**
+     * 获取 model
+     */
+    public function getModel()
+    {
+        $model = [
+            'genres'    =>  $this->selfModel['genres'],
+        ];
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+            'model' =>  $model,
+        ];
+        echo json_encode($rstArr);exit;
     }
 }

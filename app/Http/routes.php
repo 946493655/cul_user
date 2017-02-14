@@ -41,8 +41,9 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('user/auth', 'UserController@setAuth');
     $app->post('user/head', 'UserController@setHeadImg');
     $app->post('user/modifypwd', 'UserController@updatePwd');
+    $app->post('user/getmodel', 'UserController@getModel');
     //用户参数
-    $app->post('user/userparam', 'UserController@getUserParamByUid');
+    $app->post('userparam/onebyuid', 'UserController@getUserParamByUid');
     $app->post('userparam/persontopbg', 'UserParamController@setTopBg');
     //个人资料
     $app->post('person/one', 'PersonController@getOnePerson');
@@ -52,6 +53,7 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('company/one', 'CompanyController@getOneCompany');
     $app->post('company/add', 'CompanyController@store');
     $app->post('company/show', 'CompanyController@show');
+    $app->post('company/getmodel', 'CompanyController@getModel');
     //好友管理
     $app->post('frield', 'UserFrieldController@index');
     $app->post('frield/add', 'UserFrieldController@getApply');
@@ -66,6 +68,7 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('uservoice/add', 'UserVoiceController@store');
     $app->post('uservoice/modify', 'UserVoiceController@update');
     $app->post('uservoice/show', 'UserVoiceController@show');
+    $app->post('uservoice/getmodel', 'UserVoiceController@getModel');
     //用户意见
     $app->post('opinion', 'OpinionController@index');
     $app->post('opinion/add', 'OpinionController@store');
@@ -95,12 +98,14 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Activity']
     $app->post('tip/tipbyuid', 'TipController@getTipByUid');
     //钱包管理
     $app->post('wallet', 'WalletController@index');
+    $app->post('wallet/onebyuid', 'WalletController@getOneByUid');
     $app->post('wallet/add', 'WalletController@store');
     $app->post('wallet/modify', 'WalletController@update');
     $app->post('wallet/modifyVal', 'WalletController@updateVal');
     $app->post('wallet/walletbyuid', 'WalletController@getWalletByUid');
     $app->post('wallet/convert', 'WalletController@setConvert');
     $app->post('wallet/show', 'WalletController@show');
+    $app->post('wallet/getmodel', 'WalletController@getModel');
 });
 
 //管理员管理

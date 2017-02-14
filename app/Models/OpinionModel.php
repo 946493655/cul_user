@@ -6,7 +6,7 @@ class OpinionModel extends BaseModel
     /**
      * 用户意见model
      */
-    protected $table = 'bs_opinions';
+    protected $table = 'user_opinions';
     protected $fillable = [
         'id','name','intro','uid','status','remarks','isshow','created_at','updated_at',
     ];

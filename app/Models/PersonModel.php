@@ -7,7 +7,7 @@ class PersonModel extends BaseModel
      * 个人资料表 model
      */
 
-    protected $table = 'persons';
+    protected $table = 'user_persons';
     protected $fillable = [
         'id','realname','sex','idcard','idfront','uid','created_at','updated_at',
     ];

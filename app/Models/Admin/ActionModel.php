@@ -5,7 +5,7 @@ use App\Models\BaseModel;
 
 class ActionModel extends BaseModel
 {
-    protected $table = 'ba_action';
+    protected $table = 'action';
     protected $fillable = [
         'id','name','intro','namespace','controller_prefix','url','action','style_class','pid','sort','isshow','created_at','updated_at',
     ];

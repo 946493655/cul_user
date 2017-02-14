@@ -9,11 +9,11 @@ class WalletModel extends BaseModel
      * 这是用户签到表
      */
 
-    protected $table = 'bs_wallet';
+    protected $table = 'user_wallet';
     protected $fillable = [
         'id','uid','sign','gold','tip','weal','created_at','updated_at',
     ];
-    //weal福利，单位元：30签到兑换1元福利；10金币兑换1元福利；1红包兑换1元福利
+    //weal福利，单位元：10签到兑换1元福利；30金币兑换1元福利；1红包兑换1元福利
 
     /**
      * 用户名称
