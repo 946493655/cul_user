@@ -101,9 +101,10 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Activity']
     $app->post('wallet/onebyuid', 'WalletController@getOneByUid');
     $app->post('wallet/add', 'WalletController@store');
     $app->post('wallet/modify', 'WalletController@update');
-    $app->post('wallet/modifyVal', 'WalletController@updateVal');
+//    $app->post('wallet/modifyVal', 'WalletController@updateVal');
     $app->post('wallet/walletbyuid', 'WalletController@getWalletByUid');
     $app->post('wallet/convert', 'WalletController@setConvert');
+    $app->post('wallet/getconvert', 'WalletController@getConvertRecord');
     $app->post('wallet/show', 'WalletController@show');
     $app->post('wallet/getmodel', 'WalletController@getModel');
 });
