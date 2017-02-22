@@ -100,7 +100,7 @@ CREATE TABLE `log` (
   `loginTime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登陆时间',
   `logoutTime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '退出时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='管理员日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='管理员日志表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +109,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (1,3,1,'jiuge','201702071421419785','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486448501,0),(2,3,1,'jiuge','201702080952275597','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486518747,0),(3,4,1,'jiuge','201702080600077497','192.168.2.101','浙江省 杭州市 滨江区','/admin/dologin',1486533607,0),(4,3,1,'jiuge','201702090829371800','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486600177,0),(5,3,1,'jiuge','201702091504539574','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486623893,0),(6,4,1,'jiuge','201702090900508198','192.168.2.100','浙江省 杭州市 滨江区','/admin/dologin',1486630850,0),(7,3,1,'jiuge','201702100812158777','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486685535,0),(8,1,1,'jiuge','201702141454217717','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487055261,0),(9,1,1,'jiuge','201702141656104368','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487062570,0),(10,1,1,'jiuge','201702150820404757','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1487118040,0),(11,1,1,'jiuge','201702160825449103','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487204744,0);
+INSERT INTO `log` VALUES (1,3,1,'jiuge','201702071421419785','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486448501,0),(2,3,1,'jiuge','201702080952275597','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486518747,0),(3,4,1,'jiuge','201702080600077497','192.168.2.101','浙江省 杭州市 滨江区','/admin/dologin',1486533607,0),(4,3,1,'jiuge','201702090829371800','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486600177,0),(5,3,1,'jiuge','201702091504539574','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486623893,0),(6,4,1,'jiuge','201702090900508198','192.168.2.100','浙江省 杭州市 滨江区','/admin/dologin',1486630850,0),(7,3,1,'jiuge','201702100812158777','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486685535,0),(8,1,1,'jiuge','201702141454217717','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487055261,0),(9,1,1,'jiuge','201702141656104368','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487062570,0),(10,1,1,'jiuge','201702150820404757','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1487118040,0),(11,1,1,'jiuge','201702160825449103','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487204744,0),(12,1,1,'jiuge','201702170833138994','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487291593,0),(13,2,1,'jiuge','201702201502424365','192.168.2.102','浙江省 杭州市 滨江区','/admin/login',1487574162,0),(14,2,1,'jiuge','201702211027564574','192.168.2.102','浙江省 杭州市 滨江区','/admin/login',1487644076,0),(15,2,1,'jiuge','201702221007351395','192.168.2.103','浙江省 杭州市 滨江区','/admin/login',1487729255,0);
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -509,7 +509,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'jiuge','$2y$10$U93WQ6hOko5F.Jz0S9/F9.G44DfNjEkRx2CJXulXabRI/ICArE94S','123456','','jiuge@qq.com','946493655',63929131,4294967295,20,'滨江区 浦沿街道 联庄一区 29号 几楼','1','946493655@qq.com',3,1,50,0,1470795559,1481702547,1487204744),(2,'jiuge2','$2y$10$X5BdoH0p0n.E3hxCVag/neinTfiHXbMrCHUEEqf8ZpUQGaeOxUUBe','123456','','946493655@qq.com','',0,0,30,'','2','',3,0,50,0,1470795559,0,1481799171),(24,'jiuge3','$2y$10$1PuTTDN/g1XH9BYB2jD3mOh4pPnLwoAomgqf1nz/7suZwAmM4Z6ia','123456','192.168.2.100','','',0,0,0,'','0','',1,0,1,0,1480742412,0,1480742412);
+INSERT INTO `users` VALUES (1,'jiuge','$2y$10$U93WQ6hOko5F.Jz0S9/F9.G44DfNjEkRx2CJXulXabRI/ICArE94S','123456','','jiuge@qq.com','946493655',63929131,4294967295,20,'滨江区 浦沿街道 联庄一区 29号 几楼','1','946493655@qq.com',3,1,50,0,1470795559,1481702547,1487291593),(2,'jiuge2','$2y$10$X5BdoH0p0n.E3hxCVag/neinTfiHXbMrCHUEEqf8ZpUQGaeOxUUBe','123456','','946493655@qq.com','',0,0,30,'','2','',3,0,50,0,1470795559,0,1481799171),(24,'jiuge3','$2y$10$1PuTTDN/g1XH9BYB2jD3mOh4pPnLwoAomgqf1nz/7suZwAmM4Z6ia','123456','192.168.2.100','','',0,0,0,'','0','',1,0,1,0,1480742412,1487746300,1480742412);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -555,4 +555,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-16 22:02:06
+-- Dump completed on 2017-02-22 16:49:56
