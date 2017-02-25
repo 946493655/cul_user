@@ -407,35 +407,42 @@ class UserController extends BaseController
     public function update()
     {
         $id = $_POST['id'];
+        $username = isset($_POST['username'])?$_POST['username']:'';
+        $address = isset($_POST['address'])?$_POST['address']:'';
         $email = $_POST['email'];
         $qq = $_POST['qq'];
         $tel = $_POST['tel'];
         $mobile = $_POST['mobile'];
-        $isuser = $_POST['isuser'];
-        $username = isset($_POST['username'])?$_POST['username']:'';
-        $address = isset($_POST['address'])?$_POST['address']:'';
-        if (!$id) {
+        $area = $_POST['area'];
+        if (!$id || !$username) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -1,
-                    'msg'   =>  '用户基本参数有误！',
+                    'msg'   =>  '参数有误！',
                 ],
             ];
             echo json_encode($rstArr);exit;
         }
-        //假如用户类型为0，则用户类型是原记录类型
-        $model = UserModel::find($id);
-        if ($isuser==0) { $isuser = $model->isuser; }
-        if ($username=='') { $username = $model->username; }
-        if ($address=='') { $address = $model->address; }
+        $model = UserModel::where('id',$id)
+            ->where('username',$username)
+            ->first();;
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有记录！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
         $data = [
-            'email' =>  $email,
-            'qq'    =>  $qq,
-            'tel'   =>  $tel,
-            'mobile'    =>  $mobile,
-            'isuser'    =>  $isuser,
             'username'  =>  $username,
-            'address'  =>  $address,
+            'email'     =>  $email,
+            'qq'        =>  $qq,
+            'tel'       =>  $tel,
+            'mobile'    =>  $mobile,
+            'address'   =>  $address,
+            'area'      =>  $area,
             'updated_at' =>  time(),
         ];
         UserModel::where('id',$id)->update($data);
