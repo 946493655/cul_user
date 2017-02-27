@@ -74,7 +74,7 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('opinion/add', 'OpinionController@store');
     $app->post('opinion/modify', 'OpinionController@update');
     $app->post('opinion/show', 'OpinionController@show');
-    $app->post('opinion/isdel', 'OpinionController@setDel');
+    $app->post('opinion/setshow', 'OpinionController@setShow');
     $app->post('opinion/delete', 'OpinionController@forceDelete');
     $app->post('opinion/opinionsbytime', 'OpinionController@getOpinionsByTime');
     $app->post('opinion/setstatus', 'OpinionController@setStatus');

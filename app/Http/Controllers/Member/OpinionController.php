@@ -251,11 +251,11 @@ class OpinionController extends BaseController
     /**
      * 设置记录是否删除
      */
-    public function setDel()
+    public function setShow()
     {
         $id = $_POST['id'];
-        $del = $_POST['del'];
-        if (!$id || !isset($del)) {
+        $isshow = $_POST['isshow'];
+        if (!$id || !in_array($isshow,[1,2])) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -1,
@@ -274,7 +274,7 @@ class OpinionController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        OpinionModel::where('id',$id)->update(['del'=> $del]);
+        OpinionModel::where('id',$id)->update(['isshow'=> $isshow]);
         $rstArr = [
             'error' => [
                 'code'  =>  0,
