@@ -51,6 +51,7 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     //公司资料
     $app->post('company', 'CompanyController@index');
     $app->post('company/one', 'CompanyController@getOneCompany');
+    $app->post('company/onebycid', 'CompanyController@getOneCompanyByCid');
     $app->post('company/add', 'CompanyController@store');
     $app->post('company/show', 'CompanyController@show');
     $app->post('company/getmodel', 'CompanyController@getModel');
@@ -68,6 +69,7 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('uservoice/add', 'UserVoiceController@store');
     $app->post('uservoice/modify', 'UserVoiceController@update');
     $app->post('uservoice/show', 'UserVoiceController@show');
+    $app->post('uservoice/setshow', 'UserVoiceController@setshow');
     $app->post('uservoice/getmodel', 'UserVoiceController@getModel');
     //用户意见
     $app->post('opinion', 'OpinionController@index');
@@ -101,7 +103,6 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Activity']
     $app->post('wallet/onebyuid', 'WalletController@getOneByUid');
     $app->post('wallet/add', 'WalletController@store');
     $app->post('wallet/modify', 'WalletController@update');
-//    $app->post('wallet/modifyVal', 'WalletController@updateVal');
     $app->post('wallet/walletbyuid', 'WalletController@getWalletByUid');
     $app->post('wallet/convert', 'WalletController@setConvert');
     $app->post('wallet/getconvert', 'WalletController@getConvertRecord');

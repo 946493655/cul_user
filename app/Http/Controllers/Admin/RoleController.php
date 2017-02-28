@@ -20,6 +20,7 @@ class RoleController extends BaseController
             ->skip($start)
             ->take($limit)
             ->get();
+        $total = RoleModel::count();
         if (!count($models)) {
             $rstArr = [
                 'error' => [
@@ -43,7 +44,9 @@ class RoleController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }

@@ -92,6 +92,48 @@ class CompanyController extends BaseController
         }
         $datas = $this->objToArr($model);
         $datas['genreName'] = $model->genreName();
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+            'data'  =>  $datas,
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 通过 cname 获取一条公司记录
+     */
+    public function getOneCompanyByCid()
+    {
+        $cname = $_POST['canme'];
+        if (!$cname) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数错误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+
+        $model = CompanyModel::where('name',$cname)->first();
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $datas = $this->objToArr($model);
+        $datas['genreName'] = $model->genreName();
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,

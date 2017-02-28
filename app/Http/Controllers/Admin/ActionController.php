@@ -26,6 +26,7 @@ class ActionController extends BaseController
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = ActionModel::whereIn('isshow',$isshowArr)->count();
         } else {
             $models = ActionModel::whereIn('isshow',$isshowArr)
                 ->where('pid',$pid)
@@ -34,6 +35,9 @@ class ActionController extends BaseController
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = ActionModel::whereIn('isshow',$isshowArr)
+                ->where('pid',$pid)
+                ->count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -59,7 +63,9 @@ class ActionController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
+            'pagelist' =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -155,6 +161,7 @@ class ActionController extends BaseController
             echo json_encode($rstArr);exit;
         }
         $models = ActionModel::where('pid',$pid)->get();
+        $total = ActionModel::where('pid',$pid)->count();
         if (!count($models)) {
             $rstArr = [
                 'error' =>  [
@@ -177,7 +184,9 @@ class ActionController extends BaseController
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
+            'pagelist' =>  [
+            'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }

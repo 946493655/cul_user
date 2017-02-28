@@ -22,6 +22,7 @@ class AdminController extends BaseController
             ->skip($start)
             ->take($limit)
             ->get();
+        $total = AdminModel::count();
         if (!count($models)) {
             $rstArr = [
                 'error' => [
@@ -45,6 +46,9 @@ class AdminController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
