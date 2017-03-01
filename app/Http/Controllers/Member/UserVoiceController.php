@@ -34,12 +34,17 @@ class UserVoiceController extends BaseController
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = UserVoiceModel::where('uid',$uid)
+                ->whereIn('isshow',$isshowArr)
+                ->count();
         } else {
             $models = UserVoiceModel::whereIn('isshow',$isshowArr)
                 ->orderBy('id','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = UserVoiceModel::whereIn('isshow',$isshowArr)
+                ->count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -66,6 +71,9 @@ class UserVoiceController extends BaseController
                 'msg'   =>  '获取数据成功！',
             ],
             'data'  =>  $datas,
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }

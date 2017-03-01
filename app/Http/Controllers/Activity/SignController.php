@@ -30,11 +30,15 @@ class SignController extends BaseController
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = SignModel::where('uid',$uid)
+                ->count();
         } else {
             $models = SignModel::orderBy('id','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = SignModel::orderBy('id','desc')
+                ->count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -61,7 +65,9 @@ class SignController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -129,6 +135,10 @@ class SignController extends BaseController
             ->where('created_at','<',$to)
             ->orderBy('id','desc')
             ->get();
+        $total = SignModel::where('uid',$uid)
+            ->where('created_at','>',$from)
+            ->where('created_at','<',$to)
+            ->count();
         if (!count($models)) {
             $rstArr = [
                 'error' =>  [
@@ -154,7 +164,9 @@ class SignController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -188,12 +200,18 @@ class SignController extends BaseController
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = SignModel::where('uid',$uid)
+                ->where('created_at','>',$from)
+                ->where('created_at','<',$to)
+                ->count();
         } elseif (!$from && !$to) {
             $models = SignModel::where('uid',$uid)
                 ->orderBy('id','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = SignModel::where('uid',$uid)
+                ->count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -220,7 +238,9 @@ class SignController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }

@@ -29,6 +29,8 @@ class WalletController extends BaseController
             ->skip($start)
             ->take($limit)
             ->get();
+        $total = WalletModel::orderBy('id','desc')
+            ->count();
         if (!count($models)) {
             $rstArr = [
                 'error' => [
@@ -52,6 +54,9 @@ class WalletController extends BaseController
                 'msg'   =>  '操作成功！',
             ],
             'data'  =>  $datas,
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -72,6 +77,84 @@ class WalletController extends BaseController
             echo json_encode($rstArr);exit;
         }
         $model = WalletModel::where('uid',$uid)->first();
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $datas = $this->objToArr($model);
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $datas['username'] = $model->getUName();
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+            'data'  =>  $datas,
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 通过 uid 获取一条记录
+     */
+    public function getWalletByUid()
+    {
+        $uid = $_POST['uid'];
+        if (!$uid) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = WalletModel::where('uid',$uid)->first();
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $datas = $this->objToArr($model);
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        $datas['username'] = $model->getUName();
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+            'data'  =>  $datas,
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 根据 id 获取记录
+     */
+    public function show()
+    {
+        $id = $_POST['id'];
+        if (!$id) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = WalletModel::find($id);
         if (!$model) {
             $rstArr = [
                 'error' =>  [
@@ -180,90 +263,6 @@ class WalletController extends BaseController
     }
 
     /**
-     * 通过 uid 获取一条记录
-     */
-    public function getWalletByUid()
-    {
-        $uid = $_POST['uid'];
-        if (!$uid) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -1,
-                    'msg'   =>  '参数有误！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $model = WalletModel::where('uid',$uid)->first();
-        if (!$model) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -2,
-                    'msg'   =>  '没有数据！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $datas = $this->objToArr($model);
-        $datas['createTime'] = $model->createTime();
-        $datas['updateTime'] = $model->updateTime();
-        $datas['username'] = $model->getUName();
-        $rstArr = [
-            'error' =>  [
-                'code'  =>  0,
-                'msg'   =>  '操作成功！',
-            ],
-            'data'  =>  $datas,
-        ];
-        echo json_encode($rstArr);exit;
-    }
-
-//    /**
-//     * 通过 uid，type 修改值
-//     */
-//    public function updateVal()
-//    {
-//        $uid = $_POST['uid'];
-//        $type = $_POST['type'];     //type：1签到，2金币，3红包
-//        $val = $_POST['val'];
-//        if (!$uid || !$type) {
-//            $rstArr = [
-//                'error' =>  [
-//                    'code'  =>  -1,
-//                    'msg'   =>  '参数有误！',
-//                ],
-//            ];
-//            echo json_encode($rstArr);exit;
-//        }
-//        $model = WalletModel::where('uid',$uid)->first();
-//        if (!$model) {
-//            $rstArr = [
-//                'error' =>  [
-//                    'code'  =>  -2,
-//                    'msg'   =>  '没有记录！',
-//                ],
-//            ];
-//            echo json_encode($rstArr);exit;
-//        }
-//        if ($type==1) {
-//            $data['sign'] = $val;
-//        } elseif ($type==2) {
-//            $data['gold'] = $val;
-//        } elseif ($type==3) {
-//            $data['tip'] = $val;
-//        }
-//        $data['updated_at'] = time();
-//        WalletModel::where('uid',$uid)->update($data);
-//        $rstArr = [
-//            'error' =>  [
-//                'code'  =>  0,
-//                'msg'   =>  '操作成功！',
-//            ],
-//        ];
-//        echo json_encode($rstArr);exit;
-//    }
-
-    /**
      * 通过 uid，type,number 兑换福利
      * type：1sign，2gold，3tip
      */
@@ -281,7 +280,17 @@ class WalletController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        if ($type==1 && $this->signToWeal%$number!=0) {
+        $model = WalletModel::where('uid',$uid)->first();
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -3,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        if ($type==1 && $this->signToWeal*$number>$model->sign) {
             //10签到兑换1福利
             $rstArr = [
                 'error' =>  [
@@ -290,7 +299,7 @@ class WalletController extends BaseController
                 ],
             ];
             echo json_encode($rstArr);exit;
-        } elseif ($type==2 && $this->goldToWeal%$number!=0) {
+        } elseif ($type==2 && $this->goldToWeal*$number>$model->gold) {
             //30金币兑换1福利
             $rstArr = [
                 'error' =>  [
@@ -299,22 +308,12 @@ class WalletController extends BaseController
                 ],
             ];
             echo json_encode($rstArr);exit;
-        } elseif ($type==3 && $this->tipToWeal%$number!=0) {
+        } elseif ($type==3 && $this->tipToWeal*$number>$model->tip) {
             //1红包额度兑换1福利
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -2,
                     'msg'   =>  '红包额度不足！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $model = WalletModel::where('uid',$uid)->first();
-        if (!$model) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -3,
-                    'msg'   =>  '没有数据！',
                 ],
             ];
             echo json_encode($rstArr);exit;
@@ -326,12 +325,12 @@ class WalletController extends BaseController
             ];
         } elseif ($type == 2) {
             $data = [
-                'gold'  =>  $model->sign - $number * $this->goldToWeal,
+                'gold'  =>  $model->gold - $number * $this->goldToWeal,
                 'weal'  =>  $model->weal + $number,
             ];
-        } elseif ($type == 2) {
+        } elseif ($type == 3) {
             $data = [
-                'gold'  =>  $model->sign - $number * $this->tipToWeal,
+                'tip'  =>  $model->tip - $number * $this->tipToWeal,
                 'weal'  =>  $model->weal + $number,
             ];
         }
@@ -391,45 +390,6 @@ class WalletController extends BaseController
                 $datas[$k]['originNumber'] = $model->val * $this->tipToWeal;
             }
         }
-        $rstArr = [
-            'error' =>  [
-                'code'  =>  0,
-                'msg'   =>  '操作成功！',
-            ],
-            'data'  =>  $datas,
-        ];
-        echo json_encode($rstArr);exit;
-    }
-
-    /**
-     * 根据 id 获取记录
-     */
-    public function show()
-    {
-        $id = $_POST['id'];
-        if (!$id) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -1,
-                    'msg'   =>  '参数有误！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $model = WalletModel::find($id);
-        if (!$model) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -2,
-                    'msg'   =>  '没有数据！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $datas = $this->objToArr($model);
-        $datas['createTime'] = $model->createTime();
-        $datas['updateTime'] = $model->updateTime();
-        $datas['username'] = $model->getUName();
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,

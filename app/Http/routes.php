@@ -120,6 +120,7 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Admin'], f
     $app->post('log/show', 'LogController@show');
     $app->post('log/first', 'LogController@getRegistLog');
     $app->post('log/last', 'LogController@getLastLog');
+    $app->post('log/getmodel', 'LogController@getModel');
     //管理员管理
     $app->post('admin', 'AdminController@index');
     $app->post('admin/one', 'AdminController@getOneAdmin');

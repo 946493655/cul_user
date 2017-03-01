@@ -32,12 +32,14 @@ class GoldController extends BaseController
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = GoldModel::where('uid',$uid)
+                ->count();
         } else {
             $models = GoldModel::orderBy('id','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
-
+            $total = GoldModel::count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -62,7 +64,9 @@ class GoldController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }

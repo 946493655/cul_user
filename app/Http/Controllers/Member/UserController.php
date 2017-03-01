@@ -36,7 +36,10 @@ class UserController extends BaseController
             ->orderBy('id','desc')
             ->skip($start)
             ->take($limit)
-            ->get();
+            ->get();                 //转化isauth为数组
+        $total = UserModel::whereIn('isuser',$isuserArr)
+            ->whereIn('isauth',$isauthArr)
+            ->count();
         if (!count($models)) {
             $rstArr = [
                 'error' => [
@@ -62,6 +65,9 @@ class UserController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -83,15 +89,21 @@ class UserController extends BaseController
         }
         if ($time=='') {
             $models = UserModel::all();
+            $total = UserModel::count();
         } elseif ($time==0) {
             $models = UserModel::where('isauth','>',0)
                 ->orderBy('id','desc')
                 ->paginate($this->limit);
+            $total = UserModel::where('isauth','>',0)
+                ->count();
         } elseif ($time) {
             $models = UserModel::where('isauth','>',0)
                 ->where('created_at','>',$time)
                 ->orderBy('id','desc')
                 ->paginate($this->limit);
+            $total = UserModel::where('isauth','>',0)
+                ->where('created_at','>',$time)
+                ->count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -119,6 +131,9 @@ class UserController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }

@@ -26,29 +26,25 @@ class TipController extends BaseController
         $page = isset($_POST['page'])?$_POST['page']:1;         //页码，默认第一页
         $start = $limit * ($page - 1);      //记录起始id
 
-        if ($uid && $type) {
+        $typeArr = $type ? [$type] : [0,1];
+        if ($uid) {
             $models = TipModel::where('uid',$uid)
+                ->whereIn('type',$typeArr)
                 ->orderBy('id','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
-        } elseif (!$uid && $type) {
-            $models = TipModel::where('type',$type)
-                ->orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
-        } elseif ($uid && !$type) {
-            $models = TipModel::where('uid',$uid)
-                ->orderBy('id','desc')
-                ->skip($start)
-                ->take($limit)
-                ->get();
+            $total = TipModel::where('uid',$uid)
+                ->whereIn('type',$typeArr)
+                ->count();
         } else {
-            $models = TipModel::orderBy('id','desc')
+            $models = TipModel::whereIn('type',$typeArr)
+                ->orderBy('id','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = TipModel::whereIn('type',$typeArr)
+                ->count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -74,7 +70,9 @@ class TipController extends BaseController
                 'msg'   =>  '操作成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [],
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -95,7 +93,9 @@ class TipController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $model = TipModel::where('uid',$uid)->where('type',$type)->first();
+        $model = TipModel::where('uid',$uid)
+            ->where('type',$type)
+            ->first();
         if (!$model) {
             $rstArr = [
                 'error' =>  [

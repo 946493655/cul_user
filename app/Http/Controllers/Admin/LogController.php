@@ -33,12 +33,13 @@ class LogController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-
         $models = LogModel::where('genre',$genre)
             ->orderBy('id','desc')
             ->skip($start)
             ->take($limit)
             ->get();
+        $total = LogModel::where('genre',$genre)
+            ->count();
         if (!count($models)) {
             $rstArr = [
                 'error' => [
@@ -63,8 +64,8 @@ class LogController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'genres'    =>  $this->selfModel['genres'],
+            'pagelist'  =>  [
+                'total' =>  $total,
             ],
         ];
         echo json_encode($rstArr);exit;
@@ -90,11 +91,16 @@ class LogController extends BaseController
             $models = LogModel::where('genre',$genre)
                 ->distinct('uid')
                 ->get();
+            $total = LogModel::where('genre',$genre)
+                ->count();
         } elseif ($time) {
             $models = LogModel::where('genre',$genre)
                 ->where('loginTime','>',time()-3600)
                 ->distinct('uid')
                 ->get();
+            $total = LogModel::where('genre',$genre)
+                ->where('loginTime','>',time()-3600)
+                ->count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -121,8 +127,8 @@ class LogController extends BaseController
                 'msg'   =>  '成功获取数据！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'genres'    =>  $this->selfModel['genres'],
+            'pagelist'  =>  [
+                'total' =>  $total,
             ],
         ];
         echo json_encode($rstArr);exit;
@@ -230,9 +236,6 @@ class LogController extends BaseController
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'genres'    =>  $this->selfModel['genres'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -273,9 +276,6 @@ class LogController extends BaseController
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'genres'    =>  $this->selfModel['genres'],
-            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -316,8 +316,22 @@ class LogController extends BaseController
                 'msg'   =>  '获取成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'genres'    =>  $this->selfModel['genres'],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 获取 model
+     */
+    public function getModel()
+    {
+        $model = [
+            'genres'    =>  $this->selfModel['genres'],
+        ];
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
             ],
         ];
         echo json_encode($rstArr);exit;

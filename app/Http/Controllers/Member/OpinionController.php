@@ -33,6 +33,9 @@ class OpinionController extends BaseController
             ->skip($start)
             ->take($limit)
             ->get();
+        $total = OpinionModel::whereIn('status',$statusArr)
+            ->whereIn('isshow',$isshowArr)
+            ->count();
         if (!count($models)) {
             $rstArr = [
                 'error' =>  [
@@ -58,9 +61,8 @@ class OpinionController extends BaseController
                 'msg'   =>  '获取数据成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'statuss'    =>  $this->selfModel['statuss'],
-                'isshows'    =>  $this->selfModel['isshows'],
+            'pagelist'  =>  [
+                'total' =>  $total,
             ],
         ];
         echo json_encode($rstArr);exit;
@@ -86,12 +88,21 @@ class OpinionController extends BaseController
         if (!$from || $to) {
             $models = OpinionModel::where('uid',$uid)
                 ->where('isshow',2)
+                ->orderBy('id','desc')
                 ->get();
+            $total = OpinionModel::where('uid',$uid)
+                ->where('isshow',2)
+                ->count();
         } else {
             $models = OpinionModel::where('uid',$uid)
                 ->where('created_at','>',$from)
                 ->where('isshow',2)
+                ->orderBy('id','desc')
                 ->get();
+            $total = OpinionModel::where('uid',$uid)
+                ->where('created_at','>',$from)
+                ->where('isshow',2)
+                ->count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -118,9 +129,8 @@ class OpinionController extends BaseController
                 'msg'   =>  '获取数据成功！',
             ],
             'data'  =>  $datas,
-            'model' =>  [
-                'statuss'    =>  $this->selfModel['statuss'],
-                'isShows'    =>  $this->selfModel['isshows'],
+            'pagelist'  =>  [
+                'total' =>  $total,
             ],
         ];
         echo json_encode($rstArr);exit;

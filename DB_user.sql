@@ -100,7 +100,7 @@ CREATE TABLE `log` (
   `loginTime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登陆时间',
   `logoutTime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '退出时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='管理员日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='管理员日志表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +109,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (1,3,1,'jiuge','201702071421419785','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486448501,0),(2,3,1,'jiuge','201702080952275597','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486518747,0),(3,4,1,'jiuge','201702080600077497','192.168.2.101','浙江省 杭州市 滨江区','/admin/dologin',1486533607,0),(4,3,1,'jiuge','201702090829371800','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486600177,0),(5,3,1,'jiuge','201702091504539574','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486623893,0),(6,4,1,'jiuge','201702090900508198','192.168.2.100','浙江省 杭州市 滨江区','/admin/dologin',1486630850,0),(7,3,1,'jiuge','201702100812158777','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486685535,0),(8,1,1,'jiuge','201702141454217717','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487055261,0),(9,1,1,'jiuge','201702141656104368','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487062570,0),(10,1,1,'jiuge','201702150820404757','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1487118040,0),(11,1,1,'jiuge','201702160825449103','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487204744,0),(12,2,1,'jiuge','201702222141568867','192.168.1.111','浙江省 杭州市 滨江区','/admin/login',1487770916,0),(13,2,1,'jiuge','201702242129328783','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487942973,1487942999),(14,2,1,'jiuge','201702242132136448','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943133,1487943143),(15,2,1,'jiuge','201702242133472418','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943227,1487943456),(16,2,1,'jiuge','201702242138576148','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943537,1487943565),(17,2,1,'jiuge','201702242142157866','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943736,0),(18,2,1,'jiuge','201702250920036275','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487985603,0),(19,2,1,'jiuge','201702251921411102','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1488021701,0);
+INSERT INTO `log` VALUES (1,3,1,'jiuge','201702071421419785','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486448501,0),(2,3,1,'jiuge','201702080952275597','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486518747,0),(3,4,1,'jiuge','201702080600077497','192.168.2.101','浙江省 杭州市 滨江区','/admin/dologin',1486533607,0),(4,3,1,'jiuge','201702090829371800','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486600177,0),(5,3,1,'jiuge','201702091504539574','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486623893,0),(6,4,1,'jiuge','201702090900508198','192.168.2.100','浙江省 杭州市 滨江区','/admin/dologin',1486630850,0),(7,3,1,'jiuge','201702100812158777','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486685535,0),(8,1,1,'jiuge','201702141454217717','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487055261,0),(9,1,1,'jiuge','201702141656104368','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487062570,0),(10,1,1,'jiuge','201702150820404757','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1487118040,0),(11,1,1,'jiuge','201702160825449103','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487204744,0),(12,2,1,'jiuge','201702222141568867','192.168.1.111','浙江省 杭州市 滨江区','/admin/login',1487770916,0),(13,2,1,'jiuge','201702242129328783','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487942973,1487942999),(14,2,1,'jiuge','201702242132136448','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943133,1487943143),(15,2,1,'jiuge','201702242133472418','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943227,1487943456),(16,2,1,'jiuge','201702242138576148','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943537,1487943565),(17,2,1,'jiuge','201702242142157866','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943736,0),(18,2,1,'jiuge','201702250920036275','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487985603,0),(19,2,1,'jiuge','201702251921411102','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1488021701,0),(20,2,1,'jiuge','201702270902164934','192.168.2.100','浙江省 杭州市 西湖区','/admin/login',1488157336,0),(21,2,1,'jiuge','2017022808365644','192.168.2.101','浙江省 杭州市 西湖区','/admin/login',1488242216,0);
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,7 +278,7 @@ DROP TABLE IF EXISTS `user_opinions`;
 CREATE TABLE `user_opinions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL COMMENT '标题',
-  `intro` varchar(2000) NOT NULL COMMENT '内容',
+  `intro` varchar(500) NOT NULL COMMENT '内容',
   `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '意见状态：1新意见，2处理中，3不满意，4满意',
   `remarks` varchar(255) NOT NULL COMMENT '留言：不满意时必填',
@@ -286,7 +286,7 @@ CREATE TABLE `user_opinions` (
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户意见表 (bs_opinions)：用户对本站的意见';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户意见表 (bs_opinions)：用户对本站的意见';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,6 +295,7 @@ CREATE TABLE `user_opinions` (
 
 LOCK TABLES `user_opinions` WRITE;
 /*!40000 ALTER TABLE `user_opinions` DISABLE KEYS */;
+INSERT INTO `user_opinions` VALUES (1,'意见测试测试','嘎嘎嘎灌灌灌灌灌灌灌灌灌灌\r\n00000000',1,1,'',2,1488167074,1488167291);
 /*!40000 ALTER TABLE `user_opinions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -437,7 +438,7 @@ CREATE TABLE `user_voice` (
 
 LOCK TABLES `user_voice` WRITE;
 /*!40000 ALTER TABLE `user_voice` DISABLE KEYS */;
-INSERT INTO `user_voice` VALUES (1,'1111',1,'111','11111111',10,2,1476103976,0),(2,'nghnfgnhfgjmfg',1,'hnfgngfn','hngfnfgnfgtjndfmnn',10,2,1476440415,0),(3,'gnmgfnfgng',1,'fgmngm','ghmghmghm',10,2,1476440608,0);
+INSERT INTO `user_voice` VALUES (1,'1111',1,'111','11111111',10,2,1476103976,0),(2,'nghnfgnhfgjmfg',1,'hnfgngfn','hngfnfgnfgtjndfmnn',10,2,1476440415,0),(3,'gnmgfnfgng',1,'fgmngm','ghmghmghm',10,2,1476440608,1488261394);
 /*!40000 ALTER TABLE `user_voice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -555,4 +556,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-25 22:38:31
+-- Dump completed on 2017-03-01  8:11:27
