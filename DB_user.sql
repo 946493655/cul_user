@@ -100,7 +100,7 @@ CREATE TABLE `log` (
   `loginTime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登陆时间',
   `logoutTime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '退出时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='管理员日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='管理员日志表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +109,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (1,3,1,'jiuge','201702071421419785','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486448501,0),(2,3,1,'jiuge','201702080952275597','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486518747,0),(3,4,1,'jiuge','201702080600077497','192.168.2.101','浙江省 杭州市 滨江区','/admin/dologin',1486533607,0),(4,3,1,'jiuge','201702090829371800','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486600177,0),(5,3,1,'jiuge','201702091504539574','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486623893,0),(6,4,1,'jiuge','201702090900508198','192.168.2.100','浙江省 杭州市 滨江区','/admin/dologin',1486630850,0),(7,3,1,'jiuge','201702100812158777','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486685535,0),(8,1,1,'jiuge','201702141454217717','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487055261,0),(9,1,1,'jiuge','201702141656104368','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487062570,0),(10,1,1,'jiuge','201702150820404757','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1487118040,0),(11,1,1,'jiuge','201702160825449103','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487204744,0),(12,2,1,'jiuge','201702222141568867','192.168.1.111','浙江省 杭州市 滨江区','/admin/login',1487770916,0),(13,2,1,'jiuge','201702242129328783','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487942973,1487942999),(14,2,1,'jiuge','201702242132136448','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943133,1487943143),(15,2,1,'jiuge','201702242133472418','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943227,1487943456),(16,2,1,'jiuge','201702242138576148','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943537,1487943565),(17,2,1,'jiuge','201702242142157866','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943736,0),(18,2,1,'jiuge','201702250920036275','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487985603,0),(19,2,1,'jiuge','201702251921411102','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1488021701,0),(20,2,1,'jiuge','201702270902164934','192.168.2.100','浙江省 杭州市 西湖区','/admin/login',1488157336,0),(21,2,1,'jiuge','2017022808365644','192.168.2.101','浙江省 杭州市 西湖区','/admin/login',1488242216,0);
+INSERT INTO `log` VALUES (1,3,1,'jiuge','201702071421419785','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486448501,0),(2,3,1,'jiuge','201702080952275597','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1486518747,0),(3,4,1,'jiuge','201702080600077497','192.168.2.101','浙江省 杭州市 滨江区','/admin/dologin',1486533607,0),(4,3,1,'jiuge','201702090829371800','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486600177,0),(5,3,1,'jiuge','201702091504539574','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486623893,0),(6,4,1,'jiuge','201702090900508198','192.168.2.100','浙江省 杭州市 滨江区','/admin/dologin',1486630850,0),(7,3,1,'jiuge','201702100812158777','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1486685535,0),(8,1,1,'jiuge','201702141454217717','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487055261,0),(9,1,1,'jiuge','201702141656104368','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487062570,0),(10,1,1,'jiuge','201702150820404757','192.168.2.101','浙江省 杭州市 滨江区','/login/dologin',1487118040,0),(11,1,1,'jiuge','201702160825449103','192.168.2.100','浙江省 杭州市 滨江区','/login/dologin',1487204744,0),(12,2,1,'jiuge','201702222141568867','192.168.1.111','浙江省 杭州市 滨江区','/admin/login',1487770916,0),(13,2,1,'jiuge','201702242129328783','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487942973,1487942999),(14,2,1,'jiuge','201702242132136448','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943133,1487943143),(15,2,1,'jiuge','201702242133472418','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943227,1487943456),(16,2,1,'jiuge','201702242138576148','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943537,1487943565),(17,2,1,'jiuge','201702242142157866','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487943736,0),(18,2,1,'jiuge','201702250920036275','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1487985603,0),(19,2,1,'jiuge','201702251921411102','192.168.1.111','浙江省 杭州市 西湖区','/admin/login',1488021701,0),(20,2,1,'jiuge','201702270902164934','192.168.2.100','浙江省 杭州市 西湖区','/admin/login',1488157336,0),(21,2,1,'jiuge','2017022808365644','192.168.2.101','浙江省 杭州市 西湖区','/admin/login',1488242216,0),(22,2,1,'jiuge','201703010813435184','192.168.2.102','浙江省 杭州市 西湖区','/admin/login',1488327223,0),(23,2,1,'jiuge','201703020904371279','192.168.2.102','浙江省 杭州市 西湖区','/admin/login',1488416678,0),(24,2,1,'jiuge','201703030838431080','192.168.2.101','浙江省 杭州市 西湖区','/admin/login',1488501523,0),(25,2,1,'jiuge','201703040823353883','192.168.2.100','浙江省 杭州市 西湖区','/admin/login',1488587015,0),(26,2,1,'jiuge','20170306083731605','192.168.2.101','浙江省 杭州市 西湖区','/admin/login',1488760651,0),(27,2,1,'jiuge','201703070940228260','192.168.2.101','浙江省 杭州市 西湖区','/admin/login',1488850822,0);
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,6 +191,9 @@ CREATE TABLE `user_companys` (
   `fax` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '传真',
   `zipcode` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '邮编',
   `email` varchar(255) NOT NULL COMMENT '企业邮箱',
+  `logo` varchar(255) NOT NULL COMMENT '公司logo',
+  `skin` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '公司页面皮肤颜色值选择',
+  `layout` varchar(255) NOT NULL COMMENT '公司页面布局开关，0关闭，1开启：serviceSwitch服务开关，newsSwitch新闻开关，productSwitch产品开关，parternerSwitch合作伙伴，introSwitch公司简介，partSwitch花絮开关，teamSwitch团队开关，recruitSwitch招聘开关，contactSwicth类型开关，footLinkSwitch底部链接，',
   `sort` int(10) unsigned NOT NULL DEFAULT '10' COMMENT '排序字段，值越大越靠前，默认10',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
@@ -204,7 +207,7 @@ CREATE TABLE `user_companys` (
 
 LOCK TABLES `user_companys` WRITE;
 /*!40000 ALTER TABLE `user_companys` DISABLE KEYS */;
-INSERT INTO `user_companys` VALUES (1,'这是广告公司',3,10,'120.157806,30.187043','杭州市滨江区滨盛路1870号','0123456789012345',1,'0571',88888888,100000,'www.jiuge.com',12345678,311301,'123@456.com',10,20160428,1473725269),(2,'',0,0,'','','',1,'0',0,0,'',0,0,'',10,1470735629,0);
+INSERT INTO `user_companys` VALUES (1,'这是广告公司',3,10,'120.157806,30.187043','杭州市滨江区滨盛路1870号','0123456789012345',1,'0571',88888888,100000,'www.jiuge.com',12345678,311301,'123@456.com','',1,'',10,20160428,1473725269),(2,'',0,0,'','','',1,'0',0,0,'',0,0,'','',1,'',10,1470735629,0);
 /*!40000 ALTER TABLE `user_companys` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,7 +401,7 @@ CREATE TABLE `user_toweal` (
   `val` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '兑换额度',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户福利兑换表 bs_user_toweal';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='用户福利兑换表 bs_user_toweal';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -407,7 +410,7 @@ CREATE TABLE `user_toweal` (
 
 LOCK TABLES `user_toweal` WRITE;
 /*!40000 ALTER TABLE `user_toweal` DISABLE KEYS */;
-INSERT INTO `user_toweal` VALUES (1,1,1,3,1472121253),(2,1,1,2,1472173411);
+INSERT INTO `user_toweal` VALUES (1,1,1,3,1472121253),(2,1,1,2,1472173411),(3,1,3,100,1488336783),(4,1,3,100,1488336895);
 /*!40000 ALTER TABLE `user_toweal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -468,7 +471,7 @@ CREATE TABLE `user_wallet` (
 
 LOCK TABLES `user_wallet` WRITE;
 /*!40000 ALTER TABLE `user_wallet` DISABLE KEYS */;
-INSERT INTO `user_wallet` VALUES (1,1,5,6,200,0,1476063026,1482980941);
+INSERT INTO `user_wallet` VALUES (1,1,5,6,200,0,1476063026,1488336949);
 /*!40000 ALTER TABLE `user_wallet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -513,39 +516,6 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'jiuge','$2y$10$U93WQ6hOko5F.Jz0S9/F9.G44DfNjEkRx2CJXulXabRI/ICArE94S','123456','','jiuge@qq.com','946493655',63929131,4294967295,20,'滨江区 浦沿街道 联庄一区 29号 几楼','1','946493655@qq.com',3,1,50,0,1470795559,1481702547,1487204744),(2,'jiuge2','$2y$10$X5BdoH0p0n.E3hxCVag/neinTfiHXbMrCHUEEqf8ZpUQGaeOxUUBe','123456','','946493655@qq.com','',0,0,30,'','2','',3,0,50,0,1470795559,0,1481799171),(24,'jiuge3','$2y$10$1PuTTDN/g1XH9BYB2jD3mOh4pPnLwoAomgqf1nz/7suZwAmM4Z6ia','123456','192.168.2.100','','',0,0,0,'','0','',1,0,1,0,1480742412,0,1480742412);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `users_params待删除`
---
-
-DROP TABLE IF EXISTS `users_params待删除`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users_params待删除` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  `limit` int(10) unsigned NOT NULL DEFAULT '10' COMMENT '列表每页记录数，默认10条',
-  `foot_switch` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '在线创作的底部链接开关：0关闭，1开启',
-  `lecloud` varchar(255) NOT NULL COMMENT '乐视云账户',
-  `lepwd` varchar(255) NOT NULL COMMENT '乐视云密码',
-  `leplay` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否自动播放：0手动播放，1自动播放',
-  `paycode` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '支付二维码',
-  `per_top_bg_img` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '个人空间顶部背景图，pic_id',
-  `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户参数表 bs_users_params';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users_params待删除`
---
-
-LOCK TABLES `users_params待删除` WRITE;
-/*!40000 ALTER TABLE `users_params待删除` DISABLE KEYS */;
-INSERT INTO `users_params待删除` VALUES (1,1,15,1,'946493655@qq.com','zwx4074553864',0,0,1,20160406,1481699150);
-/*!40000 ALTER TABLE `users_params待删除` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -556,4 +526,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-01  8:11:27
+-- Dump completed on 2017-03-07 16:48:20

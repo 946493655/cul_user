@@ -51,8 +51,9 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     //公司资料
     $app->post('company', 'CompanyController@index');
     $app->post('company/one', 'CompanyController@getOneCompany');
-    $app->post('company/onebycid', 'CompanyController@getOneCompanyByCid');
+    $app->post('company/onebycname', 'CompanyController@getOneCompanyByCname');
     $app->post('company/add', 'CompanyController@store');
+    $app->post('company/modify', 'CompanyController@update');
     $app->post('company/show', 'CompanyController@show');
     $app->post('company/getmodel', 'CompanyController@getModel');
     //好友管理

@@ -31,11 +31,13 @@ class CompanyController extends BaseController
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = CompanyModel::where('genre',$genre)->count();
         } else {
             $models = CompanyModel::orderBy('id','desc')
                 ->skip($start)
                 ->take($limit)
                 ->get();
+            $total = CompanyModel::count();
         }
         if (!count($models)) {
             $rstArr = [
@@ -49,10 +51,7 @@ class CompanyController extends BaseController
         //整理数据
         $datas = array();
         foreach ($models as $k=>$model) {
-            $datas[$k] = $this->objToArr($model);
-            $datas[$k]['genreName'] = $model->genreName();
-            $datas[$k]['createTime'] = $model->createTime();
-            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k] = $this->getComModel($model);
         }
         $rstArr = [
             'error' =>  [
@@ -60,6 +59,9 @@ class CompanyController extends BaseController
                 'msg'   =>  '操作成功！',
             ],
             'data'  =>  $datas,
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
         ];
         echo json_encode($rstArr);exit;
     }
@@ -90,10 +92,7 @@ class CompanyController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($model);
-        $datas['genreName'] = $model->genreName();
-        $datas['createTime'] = $model->createTime();
-        $datas['updateTime'] = $model->updateTime();
+        $datas = $this->getComModel($model);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -107,9 +106,9 @@ class CompanyController extends BaseController
     /**
      * 通过 cname 获取一条公司记录
      */
-    public function getOneCompanyByCid()
+    public function getOneCompanyByCname()
     {
-        $cname = $_POST['canme'];
+        $cname = $_POST['cname'];
         if (!$cname) {
             $rstArr = [
                 'error' =>  [
@@ -130,10 +129,7 @@ class CompanyController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($model);
-        $datas['genreName'] = $model->genreName();
-        $datas['createTime'] = $model->createTime();
-        $datas['updateTime'] = $model->updateTime();
+        $datas = $this->getComModel($model);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -142,6 +138,43 @@ class CompanyController extends BaseController
             'data'  =>  $datas,
         ];
         echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 通过 cid 获取一条记录
+     */
+    public function show()
+    {
+        $id = $_POST['id'];
+        if (!$id) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = CompanyModel::find($id);
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有数据！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $datas = $this->getComModel($model);
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '获取成功！',
+            ],
+            'data'  =>  $datas,
+        ];
+        echo json_encode($rstArr);exit;
+
     }
 
     /**
@@ -184,49 +217,14 @@ class CompanyController extends BaseController
     }
 
     /**
-     * 通过 cid 获取一条记录
-     */
-    public function show()
-    {
-        $id = $_POST['id'];
-        if (!$id) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -1,
-                    'msg'   =>  '参数有误！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $model = CompanyModel::find($id);
-        if (!$model) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -2,
-                    'msg'   =>  '没有数据！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $datas = $this->objToArr($model);
-        $rstArr = [
-            'error' =>  [
-                'code'  =>  0,
-                'msg'   =>  '获取成功！',
-            ],
-            'data'  =>  $datas,
-        ];
-        echo json_encode($rstArr);exit;
-
-    }
-
-    /**
      * 获取 model
      */
     public function getModel()
     {
         $model = [
             'genres'    =>  $this->selfModel['genres'],
+            'layouts'   =>  $this->selfModel['layouts'],
+            'layoutNames'   =>  $this->selfModel['layoutNames'],
         ];
         $rstArr = [
             'error' =>  [
@@ -236,5 +234,18 @@ class CompanyController extends BaseController
             'model' =>  $model,
         ];
         echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 获取 model 组合
+     */
+    public function getComModel($model)
+    {
+        $datas = $this->objToArr($model);
+        $datas['genreName'] = $model->getGenreName();
+        $datas['layoutArr'] = $model->getLayoutArr();
+        $datas['createTime'] = $model->createTime();
+        $datas['updateTime'] = $model->updateTime();
+        return $datas;
     }
 }
