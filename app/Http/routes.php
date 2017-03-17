@@ -101,13 +101,12 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Activity']
     $app->post('tip/tipbyuid', 'TipController@getTipByUid');
     //钱包管理
     $app->post('wallet', 'WalletController@index');
-    $app->post('wallet/onebyuid', 'WalletController@getOneByUid');
+    $app->post('wallet/walletbyuid', 'WalletController@getWalletByUid');
+    $app->post('wallet/show', 'WalletController@show');
     $app->post('wallet/add', 'WalletController@store');
     $app->post('wallet/modify', 'WalletController@update');
-    $app->post('wallet/walletbyuid', 'WalletController@getWalletByUid');
     $app->post('wallet/convert', 'WalletController@setConvert');
     $app->post('wallet/getconvert', 'WalletController@getConvertRecord');
-    $app->post('wallet/show', 'WalletController@show');
     $app->post('wallet/getmodel', 'WalletController@getModel');
 });
 

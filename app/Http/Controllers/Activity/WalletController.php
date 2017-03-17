@@ -62,45 +62,6 @@ class WalletController extends BaseController
     }
 
     /**
-     * 通过 uid 获取用户钱包
-     */
-    public function getOneByUid()
-    {
-        $uid = $_POST['uid'];
-        if (!$uid) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -1,
-                    'msg'   =>  '参数有误！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $model = WalletModel::where('uid',$uid)->first();
-        if (!$model) {
-            $rstArr = [
-                'error' =>  [
-                    'code'  =>  -2,
-                    'msg'   =>  '没有数据！',
-                ],
-            ];
-            echo json_encode($rstArr);exit;
-        }
-        $datas = $this->objToArr($model);
-        $datas['createTime'] = $model->createTime();
-        $datas['updateTime'] = $model->updateTime();
-        $datas['username'] = $model->getUName();
-        $rstArr = [
-            'error' =>  [
-                'code'  =>  0,
-                'msg'   =>  '操作成功！',
-            ],
-            'data'  =>  $datas,
-        ];
-        echo json_encode($rstArr);exit;
-    }
-
-    /**
      * 通过 uid 获取一条记录
      */
     public function getWalletByUid()
