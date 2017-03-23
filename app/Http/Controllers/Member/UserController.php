@@ -52,12 +52,7 @@ class UserController extends BaseController
         //整理数据
         $datas = array();
         foreach ($models as $k=>$model) {
-            $datas[$k] = $this->objToArr($model);
-            $datas[$k]['createTime'] = $model->createTime();
-            $datas[$k]['updateTime'] = $model->updateTime();
-            $datas[$k]['authType'] = $model->authType();
-            $datas[$k]['userType'] = $model->userType();
-            $datas[$k]['vip'] = $model->isvip();
+            $datas[$k] = $this->getArrByModel($model);
         }
         $rstArr = [
             'error' => [
@@ -117,13 +112,7 @@ class UserController extends BaseController
         //整理数据
         $datas = array();
         foreach ($models as $k=>$model) {
-            $datas[$k] = $this->objToArr($model);
-            $datas[$k]['createTime'] = $model->createTime();
-            $datas[$k]['updateTime'] = $model->updateTime();
-            $datas[$k]['userType'] = $model->userType();
-            $datas[$k]['authType'] = $model->authType();
-            $datas[$k]['userType'] = $model->userType();
-            $datas[$k]['vip'] = $model->isvip();
+            $datas[$k] = $this->getArrByModel($model);
         }
         $rstArr = [
             'error' => [
@@ -165,14 +154,7 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         //整理数据
-        $datas = $this->objToArr($model);
-        $datas['createTime'] = $model->createTime();
-        $datas['updateTime'] = $model->updateTime();
-        $datas['person'] = $this->getPerson($uid);
-        $datas['company'] = $this->getCompany($uid);
-        $datas['authType'] = $model->authType();
-        $datas['userType'] = $model->userType();
-        $datas['vip'] = $model->isvip();
+        $datas = $this->getArrByModel($model);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -181,27 +163,6 @@ class UserController extends BaseController
             'data'  =>  $datas,
         ];
         echo json_encode($rstArr);exit;
-    }
-
-    /**
-     * 获取个人资料
-     */
-    public function getPerson($uid)
-    {
-        if (!$uid) { return array(); }
-        $personModel = PersonModel::where('uid',$uid)->first();
-        if ($personModel) { $personModel->sexName = $personModel->sexName(); }
-        return $personModel ? $this->objToArr($personModel) : [];
-    }
-
-    /**
-     * 获取企业资料
-     */
-    public function getCompany($uid)
-    {
-        if (!$uid) { return array(); }
-        $companyModel = CompanyModel::where('uid',$uid)->first();
-        return $companyModel ? $this->objToArr($companyModel) : [];
     }
 
     /**
@@ -231,14 +192,7 @@ class UserController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($model);
-        $datas['createTime'] = $model->createTime();
-        $datas['updateTime'] = $model->updateTime();
-        $datas['person'] = $this->getPerson($model->id);
-        $datas['company'] = $this->getCompany($model->id);
-        $datas['authType'] = $model->authType();
-        $datas['userType'] = $model->userType();
-        $datas['vip'] = $model->isvip();
+        $datas = $this->getArrByModel($model);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -315,9 +269,7 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         //整理返回数据
-        $datas = $this->objToArr($model2);
-        $datas['person'] = $this->getPerson($model2->id);
-        $datas['company'] = $this->getCompany($model2->id);
+        $datas = $this->getArrByModel($model);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -382,9 +334,7 @@ class UserController extends BaseController
         //最近登录更新
         UserModel::where('id',$model->id)->update(['lastLogin'=> time()]);
         //整理返回数据
-        $datas = $this->objToArr($model);
-        $datas['person'] = $this->getPerson($model->id);
-        $datas['company'] = $this->getCompany($model->id);
+        $datas = $this->getArrByModel($model);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -553,8 +503,8 @@ class UserController extends BaseController
     public function setHeadImg()
     {
         $id = $_POST['uid'];
-        $pic_id = $_POST['pic_id'];
-        if (!$id || !$pic_id) {
+        $head = $_POST['head'];
+        if (!$id || !$head) {
             $rstArr = [
                 'error' =>  [
                     'code'  =>  -1,
@@ -573,7 +523,7 @@ class UserController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        UserModel::where('id',$id)->update(['head'=> $pic_id]);
+        UserModel::where('id',$id)->update(['head'=> $head]);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -581,6 +531,27 @@ class UserController extends BaseController
             ],
         ];
         echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 获取个人资料
+     */
+    public function getPerson($uid)
+    {
+        if (!$uid) { return array(); }
+        $personModel = PersonModel::where('uid',$uid)->first();
+        if ($personModel) { $personModel->sexName = $personModel->sexName(); }
+        return $personModel ? $this->objToArr($personModel) : [];
+    }
+
+    /**
+     * 获取企业资料
+     */
+    public function getCompany($uid)
+    {
+        if (!$uid) { return array(); }
+        $companyModel = CompanyModel::where('uid',$uid)->first();
+        return $companyModel ? $this->objToArr($companyModel) : [];
     }
 
     /**
@@ -601,5 +572,19 @@ class UserController extends BaseController
             'model' =>  $model,
         ];
         echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 将 model 转化为 array
+     */
+    public function getArrByModel($model)
+    {
+        $data = $this->objToArr($model);
+        $data['createTime'] = $model->createTime();
+        $data['updateTime'] = $model->updateTime();
+        $data['authType'] = $model->authType();
+        $data['userType'] = $model->userType();
+        $data['vip'] = $model->isvip();
+        return $data;
     }
 }
