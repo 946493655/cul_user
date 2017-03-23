@@ -52,11 +52,7 @@ class LogController extends BaseController
         //整理数据
         $datas = array();
         foreach ($models as $k=>$model) {
-            $datas[$k] = $this->objToArr($model);
-            $datas[$k]['username'] = $model->getUname();
-            $datas[$k]['genreName'] = $model->getGenreName();
-            $datas[$k]['loginTime'] = $model->loginTime();
-            $datas[$k]['logoutTime'] = $model->logoutTime();
+            $datas[$k] = $this->getArrByModel($model);
         }
         $rstArr = [
             'error' => [
@@ -115,11 +111,7 @@ class LogController extends BaseController
         //整理数据
         $datas = array();
         foreach ($models as $k=>$model) {
-            $datas[$k] = $this->objToArr($model);
-            $datas[$k]['username'] = $model->getUname();
-            $datas[$k]['genreName'] = $model->getGenreName();
-            $datas[$k]['loginTime'] = $model->loginTime();
-            $datas[$k]['logoutTime'] = $model->logoutTime();
+            $datas[$k] = $this->getArrByModel($model);
         }
         $rstArr = [
             'error' => [
@@ -225,11 +217,7 @@ class LogController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($model);
-        $datas['username'] = $model->getUname();
-        $datas['genreName'] = $model->getGenreName();
-        $datas['loginTime'] = $model->loginTime();
-        $datas['logoutTime'] = $model->logoutTime();
+        $datas = $this->getArrByModel($model);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -255,7 +243,9 @@ class LogController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $model = LogModel::where('uid',$uid)->orderBy('id','asc')->first();
+        $model = LogModel::where('uid',$uid)
+            ->orderBy('id','asc')
+            ->first();
         if (!$model) {
             $rstArr = [
                 'error' =>  [
@@ -265,11 +255,7 @@ class LogController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($model);
-        $datas['username'] = $model->getUname();
-        $datas['genreName'] = $model->getGenreName();
-        $datas['loginTime'] = $model->loginTime();
-        $datas['logoutTime'] = $model->logoutTime();
+        $datas = $this->getArrByModel($model);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -305,11 +291,7 @@ class LogController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
-        $datas = $this->objToArr($models[1]);
-        $datas['username'] = $models[1]->getUname();
-        $datas['genreName'] = $models[1]->getGenreName();
-        $datas['loginTime'] = $models[1]->loginTime();
-        $datas['logoutTime'] = $models[1]->logoutTime();
+        $datas = $this->getArrByModel($models[1]);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -333,7 +315,20 @@ class LogController extends BaseController
                 'code'  =>  0,
                 'msg'   =>  '操作成功！',
             ],
+            'model' =>  $model,
         ];
         echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 将 model 转化为 array
+     */
+    public function getArrByModel($model)
+    {
+        $data = $this->objToArr($model);
+        $data['loginTime'] = $model->loginTime();
+        $data['logoutTime'] = $model->logoutTime();
+        $data['genreName'] = $model->getGenreName();
+        return $data;
     }
 }

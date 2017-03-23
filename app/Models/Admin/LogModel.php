@@ -63,6 +63,6 @@ class LogModel extends BaseModel
      */
     public function getGenreName()
     {
-        return $this->genres[$this->genre];
+        return array_key_exists($this->genre,$this->genres) ? $this->genres[$this->genre] : '';
     }
 }
