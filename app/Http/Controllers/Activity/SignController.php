@@ -52,12 +52,7 @@ class SignController extends BaseController
         //整理数据
         $datas = array();
         foreach ($models as $k=>$model) {
-            $datas[$k] = $this->objToArr($model);
-            $datas[$k]['signStatus'] = $model->getSignStatus($model,$model->created_at);
-            $datas[$k]['username'] = $model->getUName();
-            $datas[$k]['reward'] = $model->reward();
-            $datas[$k]['createTime'] = $model->createTime();
-            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k] = $this->getArrByModel($model);
         }
         $rstArr = [
             'error' => [
@@ -95,12 +90,7 @@ class SignController extends BaseController
         //整理数据
         $datas = array();
         foreach ($models as $k=>$model) {
-            $datas[$k] = $this->objToArr($model);
-            $datas[$k]['username'] = $model->getUName();
-            $datas[$k]['createTime'] = $model->createTime();
-            $datas[$k]['updateTime'] = $model->updateTime();
-            $datas[$k]['signStatus'] = $model->getSignStatus($uid);
-            $datas[$k]['reward'] = $model->reward();
+            $datas[$k] = $this->getArrByModel($model);
         }
         $rstArr = [
             'error' => [
@@ -151,12 +141,7 @@ class SignController extends BaseController
         //整理数据
         $datas = array();
         foreach ($models as $k=>$model) {
-            $datas[$k] = $this->objToArr($model);
-            $datas[$k]['signStatus'] = $model->getSignStatus($model,$model->created_at);
-            $datas[$k]['username'] = $model->getUName();
-            $datas[$k]['reward'] = $model->reward();
-            $datas[$k]['createTime'] = $model->createTime();
-            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k] = $this->getArrByModel($model);
         }
         $rstArr = [
             'error' => [
@@ -225,12 +210,7 @@ class SignController extends BaseController
         //整理数据
         $datas = array();
         foreach ($models as $k=>$model) {
-            $datas[$k] = $this->objToArr($model);
-            $datas[$k]['signStatus'] = $model->getSignStatus($model,$model->created_at);
-            $datas[$k]['username'] = $model->getUName();
-            $datas[$k]['reward'] = $model->reward();
-            $datas[$k]['createTime'] = $model->createTime();
-            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k] = $this->getArrByModel($model);
         }
         $rstArr = [
             'error' => [
@@ -275,6 +255,12 @@ class SignController extends BaseController
             ];
             echo json_encode($rstArr);exit;
         }
+        $data = [
+            'uid'   =>  $uid,
+            'reward'    =>  rand(1,10),
+            'created_at'    =>  time(),
+        ];
+        SignModel::create($data);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -282,5 +268,19 @@ class SignController extends BaseController
             ],
         ];
         echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 将 model 转化为 array
+     */
+    public function getArrByModel($model)
+    {
+        $data = $this->objToArr($model);
+        $data['signStatus'] = $model->getSignStatus($model,$model->created_at);
+        $data['username'] = $model->getUName();
+        $data['reward'] = $model->reward();
+        $data['createTime'] = $model->createTime();
+        $data['updateTime'] = $model->updateTime();
+        return $data;
     }
 }
