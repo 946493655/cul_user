@@ -12,7 +12,9 @@ class CompanyModel extends BaseModel
         'id','name','genre','area','point','address','yyzzid','uid','areacode','tel','qq','web','fax','zipcode','email','logo','skin','layout','sort','created_at','updated_at',
     ];
 
-    //公司页面布局开关，0关闭，1开启：serviceSwitch服务开关，newsSwitch新闻开关，productSwitch产品开关，parternerSwitch合作伙伴，introSwitch公司简介，partSwitch花絮开关，teamSwitch团队开关，recruitSwitch招聘开关，contactSwicth类型开关，footLinkSwitch底部链接，
+    //公司页面布局开关，0关闭，1开启：
+    //serviceSwitch服务开关，newsSwitch新闻开关，productSwitch产品开关，parternerSwitch合作伙伴，introSwitch公司简介，
+    //partSwitch花絮开关，teamSwitch团队开关，recruitSwitch招聘开关，contactSwicth类型开关，footLinkSwitch底部链接，
     protected $layoutNames = [
         1=>'服务开关','新闻开关','产品开关','合作伙伴','公司简介','花絮开关','团队开关','招聘开关','类型开关','底部链接',
     ];

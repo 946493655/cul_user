@@ -246,6 +246,8 @@ class CompanyController extends BaseController
         $datas['layoutArr'] = $model->getLayoutArr();
         $datas['createTime'] = $model->createTime();
         $datas['updateTime'] = $model->updateTime();
+        $datas['pointx'] = $model->getPointX();
+        $datas['pointy'] = $model->getPointY();
         return $datas;
     }
 }
