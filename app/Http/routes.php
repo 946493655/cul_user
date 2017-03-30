@@ -52,9 +52,12 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Member'], 
     $app->post('company', 'CompanyController@index');
     $app->post('company/one', 'CompanyController@getOneCompany');
     $app->post('company/onebycname', 'CompanyController@getOneCompanyByCname');
+    $app->post('company/show', 'CompanyController@show');
     $app->post('company/add', 'CompanyController@store');
     $app->post('company/modify', 'CompanyController@update');
-    $app->post('company/show', 'CompanyController@show');
+    $app->post('company/setlogo', 'CompanyController@setLogo');
+    $app->post('company/setlayout', 'CompanyController@setLayout');
+    $app->post('company/setskin', 'CompanyController@setSkin');
     $app->post('company/getmodel', 'CompanyController@getModel');
     //好友管理
     $app->post('frield', 'UserFrieldController@index');

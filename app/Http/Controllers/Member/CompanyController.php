@@ -217,13 +217,131 @@ class CompanyController extends BaseController
     }
 
     /**
+     * 更新logo
+     */
+    public function setLogo()
+    {
+        $cid = $_POST['cid'];
+        $logo = $_POST['logo'];
+        if (!$cid || !$logo) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = CompanyModel::find($cid);
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有记录！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        CompanyModel::where('id',$cid)->update(['logo'=> $logo]);
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 更新公司首页布局
+     */
+    public function setLayout()
+    {
+        $cid = $_POST['cid'];
+        $layoutArr = $_POST['layout'];
+        if (!$cid || !is_array($layoutArr)) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        foreach ($layoutArr as $k=>$layout) {
+            if (!in_array($k,$this->selfModel['layouts'])) {
+                $rstArr = [
+                    'error' =>  [
+                        'code'  =>  -2,
+                        'msg'   =>  '参数有误！',
+                    ],
+                ];
+                echo json_encode($rstArr);exit;
+            }
+        }
+        $model = CompanyModel::find($cid);
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有记录！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        CompanyModel::where('id',$cid)->update(['layout'=> serialize($layoutArr)]);
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 更新公司皮肤
+     */
+    public function setSkin()
+    {
+        $cid = $_POST['cid'];
+        $skin = $_POST['skin'];
+        if (!$cid || !$skin) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $model = CompanyModel::find($cid);
+        if (!$model) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有记录！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        CompanyModel::where('id',$cid)->update(['skin'=> $skin]);
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
      * 获取 model
      */
     public function getModel()
     {
         $model = [
             'genres'    =>  $this->selfModel['genres'],
-            'layouts'   =>  $this->selfModel['layouts'],
             'layoutNames'   =>  $this->selfModel['layoutNames'],
         ];
         $rstArr = [

@@ -12,11 +12,17 @@ class CompanyModel extends BaseModel
         'id','name','genre','area','point','address','yyzzid','uid','areacode','tel','qq','web','fax','zipcode','email','logo','skin','layout','sort','created_at','updated_at',
     ];
 
-    //公司页面布局开关，0关闭，1开启：
-    //serviceSwitch服务开关，newsSwitch新闻开关，productSwitch产品开关，parternerSwitch合作伙伴，introSwitch公司简介，
-    //partSwitch花絮开关，teamSwitch团队开关，recruitSwitch招聘开关，contactSwicth类型开关，footLinkSwitch底部链接，
+    //公司页面布局开关，序列化存储，0关闭，1开启：
+    //ppt广告开关，
+    //service服务开关，news新闻开关，product产品开关，parterner合作伙伴，intro公司简介，
+    //part花絮开关，team团队开关，recruit招聘开关，contact联系开关，footLink底部链接，
+    protected $layouts = [
+        1=>'service','news','product','parterner','intro','part','team','recruit','contact','footLink','ppt',
+    ];
     protected $layoutNames = [
-        1=>'服务开关','新闻开关','产品开关','合作伙伴','公司简介','花絮开关','团队开关','招聘开关','类型开关','底部链接',
+        'service'=>'服务开关','news'=>'新闻开关','product'=>'产品开关','parterner'=>'合作伙伴',
+        'intro'=>'公司简介','part'=>'花絮开关','team'=>'团队开关','recruit'=>'招聘开关',
+        'contact'=>'联系开关','footLink'=>'底部链接','ppt'=>'广告开关',
     ];
 
     /**
@@ -34,15 +40,7 @@ class CompanyModel extends BaseModel
     public function getLayoutArr()
     {
         if (!$this->layout) { return array(); }
-        $layouts = explode(',',$this->layout);
-        $layoutArr = array();
-        foreach ($layouts as $k=>$layout) {
-            $layoutName = $this->layoutNames[$k+1].'：';
-            $switch = $layout ? '开' : '关';
-            $layoutName .= $layoutName.$switch.'；';
-            $layoutArr[] = $layoutName;
-        }
-        return $layoutArr;
+        return unserialize($this->layout);
     }
 
     /**
