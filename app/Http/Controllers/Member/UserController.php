@@ -585,6 +585,19 @@ class UserController extends BaseController
         $data['authType'] = $model->authType();
         $data['userType'] = $model->userType();
         $data['vip'] = $model->isvip();
+        $company = CompanyModel::where('uid',$model->id)->first();
+        if (!$company) {
+            $data['company'] = array();
+        } else {
+            $data['company']['name'] = $company->name;
+        }
+        $person = PersonModel::where('uid',$model->id)->first();
+        if (!$person) {
+            $data['person'] = array();
+        } else {
+            $data['person']['realname'] = $person->realname;
+            $data['person']['sexName'] = $person->sexName();
+        }
         return $data;
     }
 }
