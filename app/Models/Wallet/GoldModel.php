@@ -10,7 +10,7 @@ class GoldModel extends BaseModel
      * 主要用于用户操作后的奖励
      */
 
-    protected $table = 'user_gold';
+    protected $table = 'ac_gold';
     protected $fillable = [
         'id','uid','genre','gold','created_at','updated_at',
     ];

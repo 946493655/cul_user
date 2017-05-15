@@ -247,7 +247,6 @@ class UserController extends BaseController
             'lastLogin'=> time(),
         ];
         UserModel::create($data);
-
         $model2 = UserModel::where('username',$uname)
             ->where('pwd',$pwd)
             ->first();
@@ -269,7 +268,7 @@ class UserController extends BaseController
             echo json_encode($rstArr);exit;
         }
         //整理返回数据
-        $datas = $this->getArrByModel($model);
+        $datas = $this->getArrByModel($model2);
         $rstArr = [
             'error' =>  [
                 'code'  =>  0,
@@ -585,19 +584,19 @@ class UserController extends BaseController
         $data['authType'] = $model->authType();
         $data['userType'] = $model->userType();
         $data['vip'] = $model->isvip();
-        $company = CompanyModel::where('uid',$model->id)->first();
-        if (!$company) {
-            $data['company'] = array();
-        } else {
-            $data['company']['name'] = $company->name;
-        }
-        $person = PersonModel::where('uid',$model->id)->first();
-        if (!$person) {
-            $data['person'] = array();
-        } else {
-            $data['person']['realname'] = $person->realname;
-            $data['person']['sexName'] = $person->sexName();
-        }
+//        $company = CompanyModel::where('uid',$model->id)->first();
+//        if (!$company) {
+//            $data['company'] = array();
+//        } else {
+//            $data['company']['name'] = $company->name;
+//        }
+//        $person = PersonModel::where('uid',$model->id)->first();
+//        if (!$person) {
+//            $data['person'] = array();
+//        } else {
+//            $data['person']['realname'] = $person->realname;
+//            $data['person']['sexName'] = $person->sexName();
+//        }
         return $data;
     }
 }

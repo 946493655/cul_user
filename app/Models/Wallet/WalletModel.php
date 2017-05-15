@@ -9,7 +9,7 @@ class WalletModel extends BaseModel
      * 这是用户签到表
      */
 
-    protected $table = 'user_wallet';
+    protected $table = 'ac_wallet';
     protected $fillable = [
         'id','uid','sign','gold','tip','weal','created_at','updated_at',
     ];

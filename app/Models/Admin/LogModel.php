@@ -9,7 +9,7 @@ class LogModel extends BaseModel
      * 这是管理员日志表
      */
 
-    protected $table = 'log';
+    protected $table = 'ba_log';
     protected $fillable = [
         'id','uid','uname','genre','action','serial','ip','ipaddress','loginTime','logoutTime',
     ];

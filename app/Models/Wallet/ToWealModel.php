@@ -9,7 +9,7 @@ class ToWealModel extends BaseModel
      * 福利的兑换记录
      */
 
-    protected $table = 'user_toweal';
+    protected $table = 'ac_toweal';
     protected $fillable = [
         'id','uid','genre','val','created_at',
     ];

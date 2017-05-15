@@ -10,7 +10,7 @@ class TipModel extends BaseModel
      * 主要用于活动、节日等给用户的福利
      */
 
-    protected $table = 'user_tip';
+    protected $table = 'ac_tip';
     protected $fillable = [
         'id','uid','type','tip','created_at','updated_at',
     ];

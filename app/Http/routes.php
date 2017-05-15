@@ -111,6 +111,11 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Activity']
     $app->post('wallet/convert', 'WalletController@setConvert');
     $app->post('wallet/getconvert', 'WalletController@getConvertRecord');
     $app->post('wallet/getmodel', 'WalletController@getModel');
+    //最新活动
+    $app->post('activity', 'ActivityController@index');
+    $app->post('activity/getmodel', 'ActivityController@getModel');
+    //最新活动领取
+    $app->post('activityuser', 'ActivityController@getUsers');
 });
 
 //管理员管理

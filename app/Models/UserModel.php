@@ -32,16 +32,16 @@ class UserModel extends BaseModel
 
     public function authType()
     {
-        return $this->isauths[$this->isauth];
+        return array_key_exists($this->isauth,$this->isauths) ? $this->isauths[$this->isauth] : '';
     }
 
     public function userType()
     {
-        return $this->isusers[$this->isuser];
+        return array_key_exists($this->isuser,$this->isusers) ? $this->isusers[$this->isuser] : '';
     }
 
     public function isvip()
     {
-        return $this->isvips[$this->isvip];
+        return array_key_exists($this->isvip,$this->isvips) ? $this->isvips[$this->isvip] : '';
     }
 }
