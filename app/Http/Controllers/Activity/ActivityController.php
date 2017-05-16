@@ -20,7 +20,7 @@ class ActivityController extends BaseController
         $genre = $_POST['genre'];
         $limit = $_POST['limit'];
         $page = $_POST['page'];
-        $start = ($limit - 1) * $page;
+        $start = $limit * ($page - 1);
         if (!$genre) {
             $query = ActivityModel::where('del',0);
         } else {
@@ -121,6 +121,7 @@ class ActivityController extends BaseController
         $data['createTime'] = $model->createTime();
         $data['updateTime'] = $model->updateTime();
         $data['genreName'] = $model->getGenreName();
+        $data['period'] = $model->period();
         return $data;
     }
 

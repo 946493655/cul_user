@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `ac_gold`;
 CREATE TABLE `ac_gold` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  `genre` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '金币奖励：\r\n1建议发布奖励，2建议评价奖励，3用户心声奖励，4订单奖励，',
+  `genre` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '金币奖励：\r\n1建议发布奖励，2建议评价奖励，\r\n3用户心声奖励，4订单奖励，\r\n5业务发布奖励，6订单申请奖励，\r\n7订单好评奖励，',
   `gold` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '金币奖励个数，单位个：\r\n意见发布随机1-5个；\r\n意见评价随机10-15个；\r\n心声随机1-5个 ；\r\n订单奖励5个；',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
@@ -166,6 +166,7 @@ CREATE TABLE `act_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `act_id` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '活动id',
   `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
+  `isuse` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已使用：0未使用，1已使用',
   `del` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '回收站：0不删除，1删除',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
@@ -179,7 +180,7 @@ CREATE TABLE `act_users` (
 
 LOCK TABLES `act_users` WRITE;
 /*!40000 ALTER TABLE `act_users` DISABLE KEYS */;
-INSERT INTO `act_users` VALUES (1,0,0,0,20160423,0),(2,0,0,0,20160613,20160613),(6,0,0,0,1487149129,1488089886);
+INSERT INTO `act_users` VALUES (1,1,4,0,0,20160423,0),(2,2,4,0,0,20160613,20160613),(6,3,4,0,0,1487149129,1488089886);
 /*!40000 ALTER TABLE `act_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,10 +195,12 @@ CREATE TABLE `activity` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL COMMENT '活动名称',
   `genre` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '活动类型：\r\n1周期性免费，2公益专栏，\r\n3折扣不停，4套餐优惠，\r\n5分享返利，6消费返利，',
-  `thumb` varchar(100) NOT NULL COMMENT '缩略图',
   `link` varchar(100) NOT NULL COMMENT '活动链接',
   `intro` varchar(500) NOT NULL COMMENT '介绍说明',
   `number` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '数量',
+  `number2` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '剩余数量',
+  `fromtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '有效期开始',
+  `totime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '有效期结束',
   `del` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '回收站：0不删除，1删除',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updated_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
@@ -211,7 +214,7 @@ CREATE TABLE `activity` (
 
 LOCK TABLES `activity` WRITE;
 /*!40000 ALTER TABLE `activity` DISABLE KEYS */;
-INSERT INTO `activity` VALUES (1,'拿斧头男',0,'','','',0,0,20160423,0),(2,'如果它不符合',0,'','','',0,0,20160613,20160613),(6,'cscs',0,'','','',0,0,1487149129,1488089886);
+INSERT INTO `activity` VALUES (1,'拿斧头男',1,'','',0,0,0,0,0,20160423,0),(2,'如果它不符合',1,'','',0,0,0,0,0,20160613,20160613),(6,'cscs',1,'','',0,0,0,0,0,1487149129,1488089886);
 /*!40000 ALTER TABLE `activity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -587,4 +590,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-15 16:59:24
+-- Dump completed on 2017-05-16 16:59:07

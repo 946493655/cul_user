@@ -11,7 +11,7 @@ class ActivityModel extends BaseModel
 
     protected $table = 'activity';
     protected $fillable = [
-        'id','name','genre','thumb','link','intro','number','del','created_at','updated_at',
+        'id','name','genre','link','intro','number','number2','fromtime','totime','del','created_at','updated_at',
     ];
 
     /**
@@ -24,5 +24,13 @@ class ActivityModel extends BaseModel
     public function getGenreName()
     {
         return array_key_exists($this->genre,$this->genres) ? $this->genres[$this->genre] : '';
+    }
+
+    public function period()
+    {
+        if (!$this->fromtime && !$this->totime) {
+            return '长期';
+        }
+        return date("Y-m-d",$this->fromtime).'--'.date('Y-m-d',$this->totime);
     }
 }
