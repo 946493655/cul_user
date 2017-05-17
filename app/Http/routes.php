@@ -116,6 +116,7 @@ $app->group(['prefix' => 'api/v1', 'namespace'=>'App\Http\Controllers\Activity']
     $app->post('activity/getmodel', 'ActivityController@getModel');
     //最新活动领取
     $app->post('activityuser', 'ActivityController@getUsers');
+    $app->post('activityuser/listbyuid', 'ActivityController@getUsersByUid');
 });
 
 //管理员管理

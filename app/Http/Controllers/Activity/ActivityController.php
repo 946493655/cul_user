@@ -66,7 +66,7 @@ class ActivityController extends BaseController
         $genre = $_POST['genre'];
         $limit = $_POST['limit'];
         $page = $_POST['page'];
-        $start = ($limit - 1) * $page;
+        $start = $limit * ($page - 1);
         if (!$genre) {
             $rstArr = [
                 'error' =>  [
@@ -98,6 +98,63 @@ class ActivityController extends BaseController
             $datas[$k]['createTime'] = $model->createTime();
             $datas[$k]['updateTime'] = $model->updateTime();
             $datas[$k]['actName'] = $model->getActivityName();
+        }
+        $rstArr = [
+            'error' =>  [
+                'code'  =>  0,
+                'msg'   =>  '操作成功！',
+            ],
+            'data'  =>  $datas,
+            'pagelist'  =>  [
+                'total' =>  $total,
+            ],
+        ];
+        echo json_encode($rstArr);exit;
+    }
+
+    /**
+     * 通过 genre 获取已领取活动的用户列表
+     */
+    public function getUsersByUid()
+    {
+        $uid = $_POST['uid'];
+        $limit = $_POST['limit'];
+        $page = $_POST['page'];
+        $start = $limit * ($page - 1);
+        if (!$uid) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -1,
+                    'msg'   =>  '参数有误！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $models = ActivityUserModel::where('del',0)
+            ->where('uid',$uid)
+            ->orderBy('id','desc')
+            ->skip($start)
+            ->take($limit)
+            ->get();
+        $total = ActivityUserModel::count();
+        if (!count($models)) {
+            $rstArr = [
+                'error' =>  [
+                    'code'  =>  -2,
+                    'msg'   =>  '没有记录！',
+                ],
+            ];
+            echo json_encode($rstArr);exit;
+        }
+        $datas = array();
+        foreach ($models as $k=>$model) {
+            $datas[$k] = $this->objToArr($model);
+            $datas[$k]['createTime'] = $model->createTime();
+            $datas[$k]['updateTime'] = $model->updateTime();
+            $datas[$k]['actName'] = $model->getActivityName();
+            $datas[$k]['genreName'] = $model->getActivityGenreName();
+            $datas[$k]['period'] = $model->getActivityPeriod();
+            $datas[$k]['isUseName'] = $model->getIsUse();
         }
         $rstArr = [
             'error' =>  [
